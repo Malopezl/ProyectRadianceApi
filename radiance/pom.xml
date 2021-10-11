@@ -8,7 +8,7 @@
 
     <groupId>gt.com.api</groupId>
     <artifactId>radiance</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1.0</version>
     <packaging>jar</packaging>
 
     <name>Radiance</name>

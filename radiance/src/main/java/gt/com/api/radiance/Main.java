@@ -4,6 +4,8 @@ import dev.morphia.Datastore;
 import gt.com.api.radiance.helper.MongoConfiguration;
 import gt.com.api.radiance.helper.MorphiaPackageBundle;
 import gt.com.api.radiance.helper.RadianceConfiguration;
+import gt.com.api.radiance.queries.SuscriptionTypeQuery;
+import gt.com.api.radiance.resources.SuscriptionTypeResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -50,8 +52,10 @@ public class Main extends Application<RadianceConfiguration> {
                     final Environment environment) {
         //MongoDB datastore
         Datastore datastore = morphiaBundle.getDatastore();
+        SuscriptionTypeQuery.setDataStore(datastore);
 
         //Resource register
+        environment.jersey().register(new SuscriptionTypeResource());
     }
 
 }

@@ -6,6 +6,8 @@
 
 package gt.com.api.radiance.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import gt.com.api.radiance.entities.SuscriptionTypes;
 import java.util.Objects;
 import org.bson.types.ObjectId;
 
@@ -18,6 +20,8 @@ public class Suscriptions {
     private String finalizationDate;
     private Boolean status;
     private ObjectId suscriptionTypeId;
+    @JsonIgnore
+    private SuscriptionTypes suscriptionsType;
 
     public Suscriptions() {
     }
@@ -44,6 +48,14 @@ public class Suscriptions {
 
     public void setSuscriptionTypeId(ObjectId suscriptionTypeId) {
         this.suscriptionTypeId = suscriptionTypeId;
+    }
+
+    public SuscriptionTypes getSuscriptionsType() {
+        return suscriptionsType;
+    }
+
+    public void setSuscriptionsType(SuscriptionTypes suscriptionsType) {
+        this.suscriptionsType = suscriptionsType;
     }
 
     @Override

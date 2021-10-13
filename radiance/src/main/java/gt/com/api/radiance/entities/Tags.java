@@ -8,20 +8,20 @@ package gt.com.api.radiance.entities;
 
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
-import java.util.Objects;
 import org.bson.types.ObjectId;
 
 /**
  *
  * @author malopez
  */
-@Entity(value = "tag", useDiscriminator = false)
+@Entity(value = "Tag", useDiscriminator = false)
 public class Tags {
 
     @Id
     private ObjectId id;
     private String name;
-    private String description;
+    private String icon;
+    private String color;
     private Boolean isDelete;
 
     public Tags() {
@@ -43,12 +43,20 @@ public class Tags {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getIcon() {
+        return icon;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public Boolean getIsDelete() {
@@ -57,46 +65,6 @@ public class Tags {
 
     public void setIsDelete(Boolean isDelete) {
         this.isDelete = isDelete;
-    }
-
-    @Override
-    public String toString() {
-        return "Tags{" + "id=" + id + ", name=" + name + ", description=" + description
-                + ", isDelete=" + isDelete + '}';
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 59 * hash + Objects.hashCode(this.id);
-        hash = 59 * hash + Objects.hashCode(this.name);
-        hash = 59 * hash + Objects.hashCode(this.description);
-        hash = 59 * hash + Objects.hashCode(this.isDelete);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Tags other = (Tags) obj;
-        if (!Objects.equals(this.name, other.name)) {
-            return false;
-        }
-        if (!Objects.equals(this.description, other.description)) {
-            return false;
-        }
-        if (!Objects.equals(this.id, other.id)) {
-            return false;
-        }
-        return Objects.equals(this.isDelete, other.isDelete);
     }
 
 }

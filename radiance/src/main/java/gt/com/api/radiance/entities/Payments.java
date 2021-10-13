@@ -15,14 +15,13 @@ import org.bson.types.ObjectId;
  *
  * @author malopez
  */
-@Entity(value = "payment", useDiscriminator = false)
+@Entity(value = "Payment", useDiscriminator = false)
 public class Payments {
 
     @Id
     private ObjectId id;
     private String date;
     private String amount;
-    private String months;
     private ObjectId userId;
 
     public Payments() {
@@ -52,14 +51,6 @@ public class Payments {
         this.amount = amount;
     }
 
-    public String getMonths() {
-        return months;
-    }
-
-    public void setMonths(String months) {
-        this.months = months;
-    }
-
     public ObjectId getUserId() {
         return userId;
     }
@@ -70,18 +61,16 @@ public class Payments {
 
     @Override
     public String toString() {
-        return "Payments{" + "id=" + id + ", date=" + date + ", amount=" + amount + ", months=" + months
-                + ", userId=" + userId + '}';
+        return "Payments{" + "id=" + id + ", date=" + date + ", amount=" + amount + ", userId=" + userId + '}';
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 89 * hash + Objects.hashCode(this.id);
-        hash = 89 * hash + Objects.hashCode(this.date);
-        hash = 89 * hash + Objects.hashCode(this.amount);
-        hash = 89 * hash + Objects.hashCode(this.months);
-        hash = 89 * hash + Objects.hashCode(this.userId);
+        hash = 59 * hash + Objects.hashCode(this.id);
+        hash = 59 * hash + Objects.hashCode(this.date);
+        hash = 59 * hash + Objects.hashCode(this.amount);
+        hash = 59 * hash + Objects.hashCode(this.userId);
         return hash;
     }
 
@@ -101,9 +90,6 @@ public class Payments {
             return false;
         }
         if (!Objects.equals(this.amount, other.amount)) {
-            return false;
-        }
-        if (!Objects.equals(this.months, other.months)) {
             return false;
         }
         if (!Objects.equals(this.id, other.id)) {

@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-package gt.com.api.radiance.dto;
+package gt.com.api.radiance.dtos;
 
-import gt.com.api.radiance.entities.Tags;
-import gt.com.api.radiance.entities.Users;
+import gt.com.api.radiance.entities.Tag;
+import gt.com.api.radiance.entities.User;
 import java.util.List;
 
 /**
@@ -20,10 +20,10 @@ public class ArticleModel {
     private String creationDate;
     private String tittle;
     private String content;
-    private Users user;
+    private User user;
     private String lastModifyDate;
     private String image;
-    private List<Tags> tags;
+    private List<Tag> tags;
 
     public String getArticleId() {
         return articleId;
@@ -57,11 +57,11 @@ public class ArticleModel {
         this.content = content;
     }
 
-    public Users getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Users user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
@@ -81,11 +81,11 @@ public class ArticleModel {
         this.image = image;
     }
 
-    public List<Tags> getTags() {
+    public List<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tags> tags) {
+    public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
 

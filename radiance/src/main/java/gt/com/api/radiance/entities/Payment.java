@@ -16,7 +16,7 @@ import org.bson.types.ObjectId;
  * @author malopez
  */
 @Entity(value = "Payment", useDiscriminator = false)
-public class Payments {
+public class Payment {
 
     @Id
     private ObjectId id;
@@ -24,7 +24,7 @@ public class Payments {
     private String amount;
     private ObjectId userId;
 
-    public Payments() {
+    public Payment() {
     }
 
     public ObjectId getId() {
@@ -85,7 +85,7 @@ public class Payments {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Payments other = (Payments) obj;
+        final Payment other = (Payment) obj;
         if (!Objects.equals(this.date, other.date)) {
             return false;
         }

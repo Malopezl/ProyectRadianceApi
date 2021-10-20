@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-package gt.com.api.radiance.dto;
+package gt.com.api.radiance.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import gt.com.api.radiance.entities.SuscriptionTypes;
+import gt.com.api.radiance.entities.SubscriptionType;
 import java.util.Objects;
 import org.bson.types.ObjectId;
 
@@ -15,15 +15,15 @@ import org.bson.types.ObjectId;
  *
  * @author malopez
  */
-public class Suscriptions {
+public class Subscription {
 
     private String finalizationDate;
     private Boolean status;
-    private ObjectId suscriptionTypeId;
+    private ObjectId subscriptionTypeId;
     @JsonIgnore
-    private SuscriptionTypes suscriptionsType;
+    private SubscriptionType subscriptionType;
 
-    public Suscriptions() {
+    public Subscription() {
     }
 
     public String getFinalizationDate() {
@@ -42,26 +42,26 @@ public class Suscriptions {
         this.status = status;
     }
 
-    public ObjectId getSuscriptionTypeId() {
-        return suscriptionTypeId;
+    public ObjectId getSubscriptionTypeId() {
+        return subscriptionTypeId;
     }
 
-    public void setSuscriptionTypeId(ObjectId suscriptionTypeId) {
-        this.suscriptionTypeId = suscriptionTypeId;
+    public void setSubscriptionTypeId(ObjectId subscriptionTypeId) {
+        this.subscriptionTypeId = subscriptionTypeId;
     }
 
-    public SuscriptionTypes getSuscriptionsType() {
-        return suscriptionsType;
+    public SubscriptionType getSubscriptionType() {
+        return subscriptionType;
     }
 
-    public void setSuscriptionsType(SuscriptionTypes suscriptionsType) {
-        this.suscriptionsType = suscriptionsType;
+    public void setSubscriptionType(SubscriptionType subscriptionType) {
+        this.subscriptionType = subscriptionType;
     }
 
     @Override
     public String toString() {
-        return "Suscriptions{" + "finalizationDate=" + finalizationDate + ", status=" + status
-                + ", suscriptionTypeId=" + suscriptionTypeId + '}';
+        return "Subscription{" + "finalizationDate=" + finalizationDate + ", status=" + status
+                + ", subscriptionTypeId=" + subscriptionTypeId + '}';
     }
 
     @Override
@@ -69,7 +69,7 @@ public class Suscriptions {
         int hash = 3;
         hash = 89 * hash + Objects.hashCode(this.finalizationDate);
         hash = 89 * hash + Objects.hashCode(this.status);
-        hash = 89 * hash + Objects.hashCode(this.suscriptionTypeId);
+        hash = 89 * hash + Objects.hashCode(this.subscriptionTypeId);
         return hash;
     }
 
@@ -84,17 +84,14 @@ public class Suscriptions {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Suscriptions other = (Suscriptions) obj;
+        final Subscription other = (Subscription) obj;
         if (!Objects.equals(this.finalizationDate, other.finalizationDate)) {
             return false;
         }
         if (!Objects.equals(this.status, other.status)) {
             return false;
         }
-        if (!Objects.equals(this.suscriptionTypeId, other.suscriptionTypeId)) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.subscriptionTypeId, other.subscriptionTypeId);
     }
 
 }

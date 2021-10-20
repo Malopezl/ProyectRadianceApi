@@ -15,7 +15,7 @@ import org.bson.types.ObjectId;
  * @author malopez
  */
 @Entity(value = "Tag", useDiscriminator = false)
-public class Tags {
+public class Tag {
 
     @Id
     private ObjectId id;
@@ -24,7 +24,7 @@ public class Tags {
     private String color;
     private Boolean isDelete;
 
-    public Tags() {
+    public Tag() {
     }
 
     public ObjectId getId() {

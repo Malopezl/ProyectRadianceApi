@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package gt.com.api.radiance.dto;
+package gt.com.api.radiance.dtos;
 
 /**
  *
@@ -19,7 +19,7 @@ public class UserModel {
     private String role;
     private String image;
     private String user;
-    private SuscriptionModel suscription;
+    private SubscriptionModel subscription;
 
     public String getUserId() {
         return userId;
@@ -77,18 +77,18 @@ public class UserModel {
         this.user = user;
     }
 
-    public SuscriptionModel getSuscription() {
-        return suscription;
+    public SubscriptionModel getSubscription() {
+        return subscription;
     }
 
-    public void setSuscription(SuscriptionModel suscription) {
-        this.suscription = suscription;
+    public void setSubscription(SubscriptionModel subscription) {
+        this.subscription = subscription;
     }
 
     @Override
     public String toString() {
         return "UserModel{" + "userId=" + userId + ", name=" + name + ", mail=" + mail + ", phoneNumber=" + phoneNumber
-                + ", role=" + role + ", image=" + image + ", user=" + user + ", suscription=" + suscription + '}';
+                + ", role=" + role + ", image=" + image + ", user=" + user + ", subscription=" + subscription + '}';
     }
 
 }

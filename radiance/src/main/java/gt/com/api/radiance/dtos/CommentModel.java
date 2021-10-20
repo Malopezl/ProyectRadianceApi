@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 
-package gt.com.api.radiance.dto;
+package gt.com.api.radiance.dtos;
 
-import gt.com.api.radiance.entities.Users;
+import gt.com.api.radiance.entities.User;
 
 /**
  *
@@ -17,7 +17,7 @@ public class CommentModel {
     private String commentId;
     private String comment;
     private String creationDate;
-    private Users userId;
+    private User userId;
 
     public String getCommentId() {
         return commentId;
@@ -43,11 +43,11 @@ public class CommentModel {
         this.creationDate = creationDate;
     }
 
-    public Users getUserId() {
+    public User getUserId() {
         return userId;
     }
 
-    public void setUserId(Users userId) {
+    public void setUserId(User userId) {
         this.userId = userId;
     }
 

@@ -18,7 +18,7 @@ import org.bson.types.ObjectId;
  * @author malopez
  */
 @Entity(value = "Article", useDiscriminator = false)
-public class Articles {
+public class Article {
 
     @Id
     private ObjectId id;
@@ -31,11 +31,11 @@ public class Articles {
     private List<ObjectId> tagsIds;
     private Boolean isDelete;
     @JsonIgnore
-    private Users user;
+    private User user;
     @JsonIgnore
-    private List<Tags> tags;
+    private List<Tag> tags;
 
-    public Articles() {
+    public Article() {
     }
 
     public ObjectId getId() {
@@ -110,19 +110,19 @@ public class Articles {
         this.isDelete = isDelete;
     }
 
-    public Users getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(Users user) {
+    public void setUser(User user) {
         this.user = user;
     }
 
-    public List<Tags> getTags() {
+    public List<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tags> tags) {
+    public void setTags(List<Tag> tags) {
         this.tags = tags;
     }
 
@@ -159,7 +159,7 @@ public class Articles {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Articles other = (Articles) obj;
+        final Article other = (Article) obj;
         if (!Objects.equals(this.creationDate, other.creationDate)) {
             return false;
         }

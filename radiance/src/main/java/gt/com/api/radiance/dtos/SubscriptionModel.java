@@ -4,19 +4,19 @@
  * and open the template in the editor.
  */
 
-package gt.com.api.radiance.dto;
+package gt.com.api.radiance.dtos;
 
-import gt.com.api.radiance.entities.SuscriptionTypes;
+import gt.com.api.radiance.entities.SubscriptionType;
 
 /**
  *
  * @author malopez
  */
-public class SuscriptionModel {
+public class SubscriptionModel {
 
     private String finalizationDate;
     private Boolean status;
-    private SuscriptionTypes suscriptionsType;
+    private SubscriptionType subscriptionType;
 
     public String getFinalizationDate() {
         return finalizationDate;
@@ -34,18 +34,18 @@ public class SuscriptionModel {
         this.status = status;
     }
 
-    public SuscriptionTypes getSuscriptionsType() {
-        return suscriptionsType;
+    public SubscriptionType getSubscriptionType() {
+        return subscriptionType;
     }
 
-    public void setSuscriptionsType(SuscriptionTypes suscriptionsType) {
-        this.suscriptionsType = suscriptionsType;
+    public void setSubscriptionType(SubscriptionType subscriptionType) {
+        this.subscriptionType = subscriptionType;
     }
 
     @Override
     public String toString() {
-        return "SuscriptionModel{" + "finalizationDate=" + finalizationDate + ", status=" + status
-                + ", suscriptionsType=" + suscriptionsType + '}';
+        return "SubscriptionModel{" + "finalizationDate=" + finalizationDate + ", status=" + status
+                + ", subscriptionType=" + subscriptionType + '}';
     }
 
 }

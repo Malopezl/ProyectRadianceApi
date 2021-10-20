@@ -9,7 +9,7 @@ package gt.com.api.radiance.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
-import gt.com.api.radiance.dto.Suscriptions;
+import gt.com.api.radiance.dtos.Subscription;
 import java.util.Objects;
 import org.bson.types.ObjectId;
 
@@ -18,7 +18,7 @@ import org.bson.types.ObjectId;
  * @author malopez
  */
 @Entity(value = "User", useDiscriminator = false)
-public class Users {
+public class User {
 
     @Id
     private ObjectId id;
@@ -29,12 +29,12 @@ public class Users {
     private String image;
     private String password;
     private String user;
-    private Suscriptions suscription;
+    private Subscription subscription;
     private Boolean isDelete;
     @JsonIgnore
-    private SuscriptionTypes suscriptionType;
+    private SubscriptionType subscriptionType;
 
-    public Users() {
+    public User() {
     }
 
     public ObjectId getId() {
@@ -101,12 +101,12 @@ public class Users {
         this.user = user;
     }
 
-    public Suscriptions getSuscription() {
-        return suscription;
+    public Subscription getSubscription() {
+        return subscription;
     }
 
-    public void setSuscription(Suscriptions suscription) {
-        this.suscription = suscription;
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
     }
 
     public Boolean getIsDelete() {
@@ -117,19 +117,19 @@ public class Users {
         this.isDelete = isDelete;
     }
 
-    public SuscriptionTypes getSuscriptionType() {
-        return suscriptionType;
+    public SubscriptionType getSubscriptionType() {
+        return subscriptionType;
     }
 
-    public void setSuscriptionType(SuscriptionTypes suscriptionType) {
-        this.suscriptionType = suscriptionType;
+    public void setSubscriptionType(SubscriptionType subscriptionType) {
+        this.subscriptionType = subscriptionType;
     }
 
     @Override
     public String toString() {
         return "Users{" + "id=" + id + ", name=" + name + ", mail=" + mail + ", phoneNumber=" + phoneNumber
                 + ", role=" + role + ", image=" + image + ", password=" + password + ", user=" + user
-                + ", suscription=" + suscription + ", isDelete=" + isDelete + '}';
+                + ", subscription=" + subscription + ", isDelete=" + isDelete + '}';
     }
 
     @Override
@@ -143,7 +143,7 @@ public class Users {
         hash = 41 * hash + Objects.hashCode(this.image);
         hash = 41 * hash + Objects.hashCode(this.password);
         hash = 41 * hash + Objects.hashCode(this.user);
-        hash = 41 * hash + Objects.hashCode(this.suscription);
+        hash = 41 * hash + Objects.hashCode(this.subscription);
         hash = 41 * hash + Objects.hashCode(this.isDelete);
         return hash;
     }
@@ -159,7 +159,7 @@ public class Users {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Users other = (Users) obj;
+        final User other = (User) obj;
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }
@@ -184,7 +184,7 @@ public class Users {
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
-        if (!Objects.equals(this.suscription, other.suscription)) {
+        if (!Objects.equals(this.subscription, other.subscription)) {
             return false;
         }
         return Objects.equals(this.isDelete, other.isDelete);

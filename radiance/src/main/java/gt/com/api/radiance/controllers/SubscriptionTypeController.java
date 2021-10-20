@@ -6,7 +6,7 @@
 
 package gt.com.api.radiance.controllers;
 
-import gt.com.api.radiance.entities.SubscriptionTypes;
+import gt.com.api.radiance.entities.SubscriptionType;
 import gt.com.api.radiance.queries.SubscriptionTypeQuery;
 import java.util.List;
 import org.bson.types.ObjectId;
@@ -24,21 +24,21 @@ public class SubscriptionTypeController {
     public SubscriptionTypeController() {
     }
 
-    public List<SubscriptionTypes> getSubscriptionTypes() {
-        return SubscriptionTypeQuery.getSubscriptionTypes();
+    public List<SubscriptionType> getSubscriptionType() {
+        return SubscriptionTypeQuery.getSubscriptionType();
     }
 
-    public SubscriptionTypes getSubscriptionType(String id) {
+    public SubscriptionType getSubscriptionType(String id) {
         ObjectId subscriptionTypeId = new ObjectId(id);
         return SubscriptionTypeQuery.getSubscriptionType(subscriptionTypeId);
     }
 
-    public SubscriptionType verifySubscriptionTypeExists(String id) {
+    public Boolean verifySubscriptionTypeExists(String id) {
         ObjectId subscriptionTypeId = new ObjectId(id);
-
+        return SubscriptionTypeQuery.verifySubscriptionTypeExists(subscriptionTypeId);
     }
 
-    public SubscriptionTypes saveSubscriptionType(SubscriptionTypes subscriptionType) {
+    public SubscriptionType saveSubscriptionType(SubscriptionType subscriptionType) {
         subscriptionType.setIsDelete(Boolean.FALSE);
         ObjectId subscriptionTypeId = SubscriptionTypeQuery.saveSubscriptionType(subscriptionType);
         if (subscriptionTypeId != null) {
@@ -50,18 +50,23 @@ public class SubscriptionTypeController {
         }
     }
 
-    public SubscriptionTypes updateSubscriptionType(String id, SubscriptionTypes subscriptionTypes) {
+    public SubscriptionType updateSubscriptionType(String id, SubscriptionType subscriptionType) {
         ObjectId subscriptionTypeId = new ObjectId(id);
-        SubscriptionTypes oldSubscriptionType = SubscriptionTypeQuery.getSubscriptionType(subscriptionTypeId);
-        oldSubscriptionType.setName(subscriptionTypes.getName());
-        oldSubscriptionType.setPrice(subscriptionTypes.getPrice());
-        oldSubscriptionType.setDescription(subscriptionTypes.getDescription());
-        subscriptionTypes = SubscriptionTypeQuery.updateSubscriptionType(subscriptionTypes, subscriptionTypeId);
+        SubscriptionType oldSubscriptionType = SubscriptionTypeQuery.getSubscriptionType(subscriptionTypeId);
+        oldSubscriptionType.setName(subscriptionType.getName());
+        oldSubscriptionType.setPrice(subscriptionType.getPrice());
+        oldSubscriptionType.setDescription(subscriptionType.getDescription());
+        subscriptionType = SubscriptionTypeQuery.updateSubscriptionType(subscriptionType, subscriptionTypeId);
 
-        if (subscriptionTypes == null) {
+        if (subscriptionType == null) {
             LOGGER.error("Unable to update the subscription type");
             return null;
         }
         return oldSubscriptionType;
+    }
+
+    public Boolean deleteSubscriptionType(String id) {
+        ObjectId subscriptionTypeId = new ObjectId(id);
+        return SubscriptionTypeQuery.deleteSubscriptionType(subscriptionTypeId);
     }
 }

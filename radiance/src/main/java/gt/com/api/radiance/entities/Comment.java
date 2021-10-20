@@ -6,6 +6,7 @@
 
 package gt.com.api.radiance.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
 import java.util.Objects;
@@ -15,8 +16,8 @@ import org.bson.types.ObjectId;
  *
  * @author malopez
  */
-@Entity(value = "comment", useDiscriminator = false)
-public class Comments {
+@Entity(value = "Comment", useDiscriminator = false)
+public class Comment {
 
     @Id
     private ObjectId id;
@@ -25,8 +26,10 @@ public class Comments {
     private ObjectId userId;
     private ObjectId articleId;
     private Boolean isDelete;
+    @JsonIgnore
+    private User user;
 
-    public Comments() {
+    public Comment() {
     }
 
     public ObjectId getId() {
@@ -77,6 +80,14 @@ public class Comments {
         this.isDelete = isDelete;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Comments{" + "id=" + id + ", comment=" + comment + ", creationDate=" + creationDate
@@ -106,7 +117,7 @@ public class Comments {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Comments other = (Comments) obj;
+        final Comment other = (Comment) obj;
         if (!Objects.equals(this.comment, other.comment)) {
             return false;
         }

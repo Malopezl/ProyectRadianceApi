@@ -6,6 +6,7 @@
 
 package gt.com.api.radiance.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.morphia.annotations.Entity;
 import dev.morphia.annotations.Id;
 import java.util.List;
@@ -16,8 +17,8 @@ import org.bson.types.ObjectId;
  *
  * @author malopez
  */
-@Entity(value = "article", useDiscriminator = false)
-public class Articles {
+@Entity(value = "Article", useDiscriminator = false)
+public class Article {
 
     @Id
     private ObjectId id;
@@ -26,10 +27,15 @@ public class Articles {
     private String content;
     private ObjectId userId;
     private String lastModifyDate;
-    private List<Tags> tag;
+    private String image;
+    private List<ObjectId> tagsIds;
     private Boolean isDelete;
+    @JsonIgnore
+    private User user;
+    @JsonIgnore
+    private List<Tag> tags;
 
-    public Articles() {
+    public Article() {
     }
 
     public ObjectId getId() {
@@ -80,12 +86,20 @@ public class Articles {
         this.lastModifyDate = lastModifyDate;
     }
 
-    public List<Tags> getTag() {
-        return tag;
+    public String getImage() {
+        return image;
     }
 
-    public void setTag(List<Tags> tag) {
-        this.tag = tag;
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public List<ObjectId> getTagsIds() {
+        return tagsIds;
+    }
+
+    public void setTagsIds(List<ObjectId> tagsIds) {
+        this.tagsIds = tagsIds;
     }
 
     public Boolean getIsDelete() {
@@ -96,24 +110,41 @@ public class Articles {
         this.isDelete = isDelete;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
+    }
+
     @Override
     public String toString() {
         return "Articles{" + "id=" + id + ", creationDate=" + creationDate + ", tittle=" + tittle
                 + ", content=" + content + ", userId=" + userId + ", lastModifyDate=" + lastModifyDate
-                + ", tag=" + tag + ", isDelete=" + isDelete + '}';
+                + ", image=" + image + ", tagsIds=" + tagsIds + ", isDelete=" + isDelete + '}';
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 13 * hash + Objects.hashCode(this.id);
-        hash = 13 * hash + Objects.hashCode(this.creationDate);
-        hash = 13 * hash + Objects.hashCode(this.tittle);
-        hash = 13 * hash + Objects.hashCode(this.content);
-        hash = 13 * hash + Objects.hashCode(this.userId);
-        hash = 13 * hash + Objects.hashCode(this.lastModifyDate);
-        hash = 13 * hash + Objects.hashCode(this.tag);
-        hash = 13 * hash + Objects.hashCode(this.isDelete);
+        int hash = 3;
+        hash = 67 * hash + Objects.hashCode(this.id);
+        hash = 67 * hash + Objects.hashCode(this.creationDate);
+        hash = 67 * hash + Objects.hashCode(this.tittle);
+        hash = 67 * hash + Objects.hashCode(this.content);
+        hash = 67 * hash + Objects.hashCode(this.userId);
+        hash = 67 * hash + Objects.hashCode(this.lastModifyDate);
+        hash = 67 * hash + Objects.hashCode(this.image);
+        hash = 67 * hash + Objects.hashCode(this.tagsIds);
+        hash = 67 * hash + Objects.hashCode(this.isDelete);
         return hash;
     }
 
@@ -128,7 +159,7 @@ public class Articles {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Articles other = (Articles) obj;
+        final Article other = (Article) obj;
         if (!Objects.equals(this.creationDate, other.creationDate)) {
             return false;
         }
@@ -141,13 +172,16 @@ public class Articles {
         if (!Objects.equals(this.lastModifyDate, other.lastModifyDate)) {
             return false;
         }
+        if (!Objects.equals(this.image, other.image)) {
+            return false;
+        }
         if (!Objects.equals(this.id, other.id)) {
             return false;
         }
         if (!Objects.equals(this.userId, other.userId)) {
             return false;
         }
-        if (!Objects.equals(this.tag, other.tag)) {
+        if (!Objects.equals(this.tagsIds, other.tagsIds)) {
             return false;
         }
         return Objects.equals(this.isDelete, other.isDelete);

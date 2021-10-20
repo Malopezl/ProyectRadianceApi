@@ -15,8 +15,8 @@ import org.bson.types.ObjectId;
  *
  * @author malopez
  */
-@Entity(value = "suscriptionType", useDiscriminator = false)
-public class SuscriptionTypes {
+@Entity(value = "SuscriptionType", useDiscriminator = false)
+public class SubscriptionType {
 
     @Id
     private ObjectId id;
@@ -25,7 +25,7 @@ public class SuscriptionTypes {
     private String description;
     private Boolean isDelete;
 
-    public SuscriptionTypes() {
+    public SubscriptionType() {
     }
 
     public ObjectId getId() {
@@ -96,7 +96,7 @@ public class SuscriptionTypes {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final SuscriptionTypes other = (SuscriptionTypes) obj;
+        final SubscriptionType other = (SubscriptionType) obj;
         if (!Objects.equals(this.name, other.name)) {
             return false;
         }

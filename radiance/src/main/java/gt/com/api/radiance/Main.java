@@ -4,6 +4,7 @@ import dev.morphia.Datastore;
 import gt.com.api.radiance.helper.MongoConfiguration;
 import gt.com.api.radiance.helper.MorphiaPackageBundle;
 import gt.com.api.radiance.helper.RadianceConfiguration;
+import gt.com.api.radiance.verify.JwtRegister;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -13,6 +14,7 @@ import java.util.EnumSet;
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
+import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +53,10 @@ public class Main extends Application<RadianceConfiguration> {
 
     @Override
     public void run(final RadianceConfiguration configuration,
-                    final Environment environment) {
+                    final Environment environment) throws JoseException {
+        //Jwt
+        JwtRegister jwtRegister = new JwtRegister();
+        jwtRegister.register(environment);
         //MongoDB datastore
         Datastore datastore = morphiaBundle.getDatastore();
 

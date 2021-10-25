@@ -14,8 +14,12 @@ logging:
 applicationName: radiance
 
 swagger:
-    resourcePackage: gt.com.api.radiance
+    resourcePackage: gt.com.api.radiance.resource
 
 mongo:
   type: uriConfig
   uri: mongodb://localhost:27017/radianceDB
+
+secretKey: superSecret
+
+apiVersion: 1

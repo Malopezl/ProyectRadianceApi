@@ -1,9 +1,12 @@
 package gt.com.api.radiance;
 
 import dev.morphia.Datastore;
+import gt.com.api.radiance.dtos.ApiVersion;
 import gt.com.api.radiance.helper.MongoConfiguration;
 import gt.com.api.radiance.helper.MorphiaPackageBundle;
 import gt.com.api.radiance.helper.RadianceConfiguration;
+import gt.com.api.radiance.queries.UserQuery;
+import gt.com.api.radiance.resources.LoginResource;
 import gt.com.api.radiance.verify.JwtRegister;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
@@ -54,11 +57,13 @@ public class Main extends Application<RadianceConfiguration> {
     @Override
     public void run(final RadianceConfiguration configuration,
                     final Environment environment) throws JoseException {
+        ApiVersion.getInstance(configuration.getApiVersion());
         //Jwt
         JwtRegister jwtRegister = new JwtRegister();
         jwtRegister.register(environment);
         //MongoDB datastore
         Datastore datastore = morphiaBundle.getDatastore();
+        UserQuery.setDataStore(datastore);
 
         //Configure CORS parameters
         final FilterRegistration.Dynamic cors
@@ -71,6 +76,7 @@ public class Main extends Application<RadianceConfiguration> {
         cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
 
         //Resource register
+        environment.jersey().register(new LoginResource());
     }
 
 }

@@ -7,7 +7,10 @@
 package gt.com.api.radiance.resources;
 
 import gt.com.api.radiance.controllers.SubscriptionTypeController;
+import gt.com.api.radiance.dtos.UserLoad;
 import gt.com.api.radiance.entities.SubscriptionType;
+import gt.com.api.radiance.verify.ApiVersionValidator;
+import gt.com.api.radiance.verify.Authenticator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
@@ -44,6 +47,8 @@ public class SubscriptionTypeResource {
     @GET
     public List<SubscriptionType> getSubscriptionType(@Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
+        ApiVersionValidator.validate(request);
+        UserLoad userLoad = Authenticator.tokenValidation(request);
         List<SubscriptionType> subscriptionType = SUBSCRIPTION_TYPE_CONTROLLER.getSubscriptionType();
         if (subscriptionType == null) {
             LOGGER.error("Time of not GET subscription type list: " + (System.currentTimeMillis() - startTime)
@@ -60,6 +65,8 @@ public class SubscriptionTypeResource {
     @Path("/{id}")
     public SubscriptionType getSubscriptionType(@PathParam("id") String id, @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
+        ApiVersionValidator.validate(request);
+        UserLoad userLoad = Authenticator.tokenValidation(request);
         SubscriptionType subscriptionType = SUBSCRIPTION_TYPE_CONTROLLER.getSubscriptionType(id);
         if (subscriptionType == null) {
             LOGGER.error("Time of not GET subscription type: " + (System.currentTimeMillis() - startTime)
@@ -76,6 +83,8 @@ public class SubscriptionTypeResource {
     public SubscriptionType postSubscriptionType(SubscriptionType subscriptionType,
             @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
+        ApiVersionValidator.validate(request);
+        UserLoad userLoad = Authenticator.tokenValidation(request);
         //verification of required fields
         if (subscriptionType.getName().equals("") || subscriptionType.getPrice().equals("")
                 || subscriptionType.getDescription().equals("")) {
@@ -100,6 +109,8 @@ public class SubscriptionTypeResource {
     public SubscriptionType putSubscriptionType(SubscriptionType subscriptionType, @PathParam("id") String id,
             @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
+        ApiVersionValidator.validate(request);
+        UserLoad userLoad = Authenticator.tokenValidation(request);
         //verification of required fields
         if (subscriptionType.getName().equals("") || subscriptionType.getPrice().equals("")
                 || subscriptionType.getDescription().equals("")) {
@@ -131,6 +142,8 @@ public class SubscriptionTypeResource {
     @Path("/{id}")
     public Response deleteSubscriptionType(@PathParam("id") String id, @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
+        ApiVersionValidator.validate(request);
+        UserLoad userLoad = Authenticator.tokenValidation(request);
         //verificate subscription type exists
         if (SUBSCRIPTION_TYPE_CONTROLLER.verifySubscriptionTypeExists(id)) {
             LOGGER.error("Time of not delete suscription type: " + (System.currentTimeMillis() - startTime)

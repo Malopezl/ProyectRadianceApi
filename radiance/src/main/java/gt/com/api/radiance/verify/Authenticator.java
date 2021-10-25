@@ -9,6 +9,7 @@ package gt.com.api.radiance.verify;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gt.com.api.radiance.dtos.UserLoad;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import org.jose4j.jwt.consumer.InvalidJwtException;
@@ -29,7 +30,8 @@ public final class Authenticator {
     private Authenticator() {
     }
 
-    public static UserLoad tokenValidation(String authorization) {
+    public static UserLoad tokenValidation(HttpServletRequest request) {
+        final String authorization = request.getHeader("Authorization");
         String token = authorization.replaceAll("Bearer", "");
         ObjectMapper map = new ObjectMapper();
         JwtConsumer jwtConsumer = new JwtConsumerBuilder()

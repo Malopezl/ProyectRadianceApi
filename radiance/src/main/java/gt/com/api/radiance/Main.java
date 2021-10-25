@@ -1,11 +1,15 @@
 package gt.com.api.radiance;
 
 import dev.morphia.Datastore;
+import gt.com.api.radiance.dtos.ApiVersion;
 import gt.com.api.radiance.helper.MongoConfiguration;
 import gt.com.api.radiance.helper.MorphiaPackageBundle;
 import gt.com.api.radiance.helper.RadianceConfiguration;
 import gt.com.api.radiance.queries.SubscriptionTypeQuery;
+import gt.com.api.radiance.queries.UserQuery;
+import gt.com.api.radiance.resources.LoginResource;
 import gt.com.api.radiance.resources.SubscriptionTypeResource;
+import gt.com.api.radiance.verify.JwtRegister;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -15,6 +19,7 @@ import java.util.EnumSet;
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
+import org.jose4j.lang.JoseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,9 +58,14 @@ public class Main extends Application<RadianceConfiguration> {
 
     @Override
     public void run(final RadianceConfiguration configuration,
-                    final Environment environment) {
+                    final Environment environment) throws JoseException {
+        ApiVersion.getInstance(configuration.getApiVersion());
+        //Jwt
+        JwtRegister jwtRegister = new JwtRegister();
+        jwtRegister.register(environment);
         //MongoDB datastore
         Datastore datastore = morphiaBundle.getDatastore();
+        UserQuery.setDataStore(datastore);
         SubscriptionTypeQuery.setDataStore(datastore);
 
         //Configure CORS parameters
@@ -69,6 +79,7 @@ public class Main extends Application<RadianceConfiguration> {
         cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
 
         //Resource register
+        environment.jersey().register(new LoginResource());
         environment.jersey().register(new SubscriptionTypeResource());
     }
 

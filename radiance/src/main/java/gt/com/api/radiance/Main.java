@@ -6,9 +6,11 @@ import gt.com.api.radiance.helper.MongoConfiguration;
 import gt.com.api.radiance.helper.MorphiaPackageBundle;
 import gt.com.api.radiance.helper.RadianceConfiguration;
 import gt.com.api.radiance.queries.SubscriptionTypeQuery;
+import gt.com.api.radiance.queries.TagQuery;
 import gt.com.api.radiance.queries.UserQuery;
 import gt.com.api.radiance.resources.LoginResource;
 import gt.com.api.radiance.resources.SubscriptionTypeResource;
+import gt.com.api.radiance.resources.TagResource;
 import gt.com.api.radiance.verify.JwtRegister;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
@@ -67,6 +69,7 @@ public class Main extends Application<RadianceConfiguration> {
         Datastore datastore = morphiaBundle.getDatastore();
         UserQuery.setDataStore(datastore);
         SubscriptionTypeQuery.setDataStore(datastore);
+        TagQuery.setDataStore(datastore);
 
         //Configure CORS parameters
         final FilterRegistration.Dynamic cors
@@ -81,6 +84,7 @@ public class Main extends Application<RadianceConfiguration> {
         //Resource register
         environment.jersey().register(new LoginResource());
         environment.jersey().register(new SubscriptionTypeResource());
+        environment.jersey().register(new TagResource());
     }
 
 }

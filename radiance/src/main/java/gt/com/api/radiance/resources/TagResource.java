@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
  * @author malopez
  */
 @Api("Tag")
-@Path("/tag")
+@Path("/api/tag")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class TagResource {

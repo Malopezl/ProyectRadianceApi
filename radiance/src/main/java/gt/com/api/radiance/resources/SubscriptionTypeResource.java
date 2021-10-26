@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
  * @author malopez
  */
 @Api("SubscriptionType")
-@Path("/subscriptiontype")
+@Path("/api/subscriptiontype")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class SubscriptionTypeResource {

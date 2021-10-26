@@ -14,7 +14,7 @@ logging:
 applicationName: radiance
 
 swagger:
-    resourcePackage: gt.com.api.radiance.resource
+    resourcePackage: gt.com.api.radiance.resources
 
 mongo:
   type: uriConfig

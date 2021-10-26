@@ -9,7 +9,9 @@ server:
 logging:
   level: INFO
   loggers:
-    gt.com.api: DEBUG
+    gt.com.api.radiance: DEBUG
+  appenders:
+    - type: console
 
 applicationName: radiance
 

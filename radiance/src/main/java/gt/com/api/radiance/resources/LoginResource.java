@@ -10,12 +10,16 @@ import gt.com.api.radiance.controllers.LoginController;
 import gt.com.api.radiance.dtos.LoginModel;
 import gt.com.api.radiance.dtos.UserForLogin;
 import gt.com.api.radiance.verify.ApiVersionValidator;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +28,10 @@ import org.slf4j.LoggerFactory;
  *
  * @author malopez
  */
+@Api("Login")
+@Path("/api")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class LoginResource {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginResource.class);

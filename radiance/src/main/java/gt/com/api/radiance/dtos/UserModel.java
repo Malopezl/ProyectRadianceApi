@@ -19,6 +19,8 @@ public class UserModel {
     private String role;
     private String image;
     private String user;
+    private String password;
+    private Boolean isVerified;
     private SubscriptionModel subscription;
 
     public String getUserId() {
@@ -77,6 +79,22 @@ public class UserModel {
         this.user = user;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Boolean getIsVerified() {
+        return isVerified;
+    }
+
+    public void setIsVerified(Boolean isVerified) {
+        this.isVerified = isVerified;
+    }
+
     public SubscriptionModel getSubscription() {
         return subscription;
     }
@@ -88,7 +106,8 @@ public class UserModel {
     @Override
     public String toString() {
         return "UserModel{" + "userId=" + userId + ", name=" + name + ", mail=" + mail + ", phoneNumber=" + phoneNumber
-                + ", role=" + role + ", image=" + image + ", user=" + user + ", subscription=" + subscription + '}';
+                + ", role=" + role + ", image=" + image + ", user=" + user + ", password=" + password
+                + ", isVerified=" + isVerified + ", subscription=" + subscription + '}';
     }
 
 }

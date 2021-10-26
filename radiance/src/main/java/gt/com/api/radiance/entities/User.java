@@ -30,6 +30,7 @@ public class User {
     private String password;
     private String user;
     private Subscription subscription;
+    private Boolean isVerified;
     private Boolean isDelete;
     @JsonIgnore
     private SubscriptionType subscriptionType;
@@ -109,6 +110,14 @@ public class User {
         this.subscription = subscription;
     }
 
+    public Boolean getIsVerified() {
+        return isVerified;
+    }
+
+    public void setIsVerified(Boolean isVerified) {
+        this.isVerified = isVerified;
+    }
+
     public Boolean getIsDelete() {
         return isDelete;
     }
@@ -127,24 +136,27 @@ public class User {
 
     @Override
     public String toString() {
-        return "Users{" + "id=" + id + ", name=" + name + ", mail=" + mail + ", phoneNumber=" + phoneNumber
+        return "User{" + "id=" + id + ", name=" + name + ", mail=" + mail + ", phoneNumber=" + phoneNumber
                 + ", role=" + role + ", image=" + image + ", password=" + password + ", user=" + user
-                + ", subscription=" + subscription + ", isDelete=" + isDelete + '}';
+                + ", subscription=" + subscription + ", isVerified=" + isVerified + ", isDelete=" + isDelete
+                + ", subscriptionType=" + subscriptionType + '}';
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 41 * hash + Objects.hashCode(this.id);
-        hash = 41 * hash + Objects.hashCode(this.name);
-        hash = 41 * hash + Objects.hashCode(this.mail);
-        hash = 41 * hash + Objects.hashCode(this.phoneNumber);
-        hash = 41 * hash + Objects.hashCode(this.role);
-        hash = 41 * hash + Objects.hashCode(this.image);
-        hash = 41 * hash + Objects.hashCode(this.password);
-        hash = 41 * hash + Objects.hashCode(this.user);
-        hash = 41 * hash + Objects.hashCode(this.subscription);
-        hash = 41 * hash + Objects.hashCode(this.isDelete);
+        int hash = 3;
+        hash = 11 * hash + Objects.hashCode(this.id);
+        hash = 11 * hash + Objects.hashCode(this.name);
+        hash = 11 * hash + Objects.hashCode(this.mail);
+        hash = 11 * hash + Objects.hashCode(this.phoneNumber);
+        hash = 11 * hash + Objects.hashCode(this.role);
+        hash = 11 * hash + Objects.hashCode(this.image);
+        hash = 11 * hash + Objects.hashCode(this.password);
+        hash = 11 * hash + Objects.hashCode(this.user);
+        hash = 11 * hash + Objects.hashCode(this.subscription);
+        hash = 11 * hash + Objects.hashCode(this.isVerified);
+        hash = 11 * hash + Objects.hashCode(this.isDelete);
+        hash = 11 * hash + Objects.hashCode(this.subscriptionType);
         return hash;
     }
 
@@ -187,7 +199,13 @@ public class User {
         if (!Objects.equals(this.subscription, other.subscription)) {
             return false;
         }
-        return Objects.equals(this.isDelete, other.isDelete);
+        if (!Objects.equals(this.isVerified, other.isVerified)) {
+            return false;
+        }
+        if (!Objects.equals(this.isDelete, other.isDelete)) {
+            return false;
+        }
+        return Objects.equals(this.subscriptionType, other.subscriptionType);
     }
 
 }

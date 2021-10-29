@@ -28,7 +28,7 @@ public class SubscriptionTypeController {
         return SubscriptionTypeQuery.getSubscriptionType();
     }
 
-    public SubscriptionType getSubscriptionType(String id) {
+    public static SubscriptionType getSubscriptionType(String id) {
         ObjectId subscriptionTypeId = new ObjectId(id);
         return SubscriptionTypeQuery.getSubscriptionType(subscriptionTypeId);
     }

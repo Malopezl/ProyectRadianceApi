@@ -122,7 +122,7 @@ public class SubscriptionTypeResource {
         if (SUBSCRIPTION_TYPE_CONTROLLER.verifySubscriptionTypeExists(id)) {
             LOGGER.error("Time of not update suscription type: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.NOT_FOUND.getStatusCode());
-            throw new WebApplicationException("Subscription type not found, subscriptionTypeId: " + id,
+            throw new WebApplicationException("Subscription type not found, subscriptionTypeID: " + id,
                     Response.Status.NOT_FOUND);
         }
         SubscriptionType updateSubscriptionType = SUBSCRIPTION_TYPE_CONTROLLER.updateSubscriptionType(id,
@@ -148,7 +148,7 @@ public class SubscriptionTypeResource {
         if (SUBSCRIPTION_TYPE_CONTROLLER.verifySubscriptionTypeExists(id)) {
             LOGGER.error("Time of not delete suscription type: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.NOT_FOUND.getStatusCode());
-            throw new WebApplicationException("Subscription type not found, subscriptionTypeId: " + id,
+            throw new WebApplicationException("Subscription type not found, subscriptionTypeID: " + id,
                     Response.Status.NOT_FOUND);
         }
         if (!SUBSCRIPTION_TYPE_CONTROLLER.deleteSubscriptionType(id)) {

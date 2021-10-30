@@ -52,17 +52,12 @@ public class SubscriptionTypeController {
 
     public SubscriptionType updateSubscriptionType(String id, SubscriptionType subscriptionType) {
         ObjectId subscriptionTypeId = new ObjectId(id);
-        SubscriptionType oldSubscriptionType = SubscriptionTypeQuery.getSubscriptionType(subscriptionTypeId);
-        oldSubscriptionType.setName(subscriptionType.getName());
-        oldSubscriptionType.setPrice(subscriptionType.getPrice());
-        oldSubscriptionType.setDescription(subscriptionType.getDescription());
         subscriptionType = SubscriptionTypeQuery.updateSubscriptionType(subscriptionType, subscriptionTypeId);
-
         if (subscriptionType == null) {
             LOGGER.error("Unable to update the subscription type");
             return null;
         }
-        return oldSubscriptionType;
+        return subscriptionType;
     }
 
     public Boolean deleteSubscriptionType(String id) {

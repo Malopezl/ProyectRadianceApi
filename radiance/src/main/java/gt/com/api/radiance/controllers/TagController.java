@@ -69,8 +69,8 @@ public class TagController {
     }
 
     public boolean verifyTagExists(String id) {
-        ObjectId taId = new ObjectId(id);
-        return TagQuery.verifyTagExists(taId);
+        ObjectId tagId = new ObjectId(id);
+        return TagQuery.verifyTagExists(tagId);
     }
 
     public Tag updateTag(String id, Tag tag) {

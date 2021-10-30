@@ -69,21 +69,20 @@ public class TagResource {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
 //        UserLoad userLoad = Authenticator.tokenValidation(request);
-        Tag subscriptionType = TAG_CONTROLLER.getTag(id);
-        if (subscriptionType == null) {
+        Tag tag = TAG_CONTROLLER.getTag(id);
+        if (tag == null) {
             LOGGER.error("Time of not GET tag: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST);
             throw new WebApplicationException("Cannot get tag ", Response.Status.BAD_REQUEST);
         }
         LOGGER.info("Time to GET tag: " + (System.currentTimeMillis() - startTime)
                 + " milliseconds, statusCode:" + Response.Status.OK);
-        return subscriptionType;
+        return tag;
     }
 
     @ApiOperation(value = "Create tag", notes = "Insert new tag")
     @POST
-    public Tag postTag(Tag tag,
-            @Context HttpServletRequest request) {
+    public Tag postTag(Tag tag, @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
 //        UserLoad userLoad = Authenticator.tokenValidation(request);
@@ -107,8 +106,7 @@ public class TagResource {
     @ApiOperation(value = "Update specific tag", notes = "Modify specific tag")
     @PUT
     @Path("/{id}")
-    public Tag putTag(Tag tag, @PathParam("id") String id,
-            @Context HttpServletRequest request) {
+    public Tag putTag(Tag tag, @PathParam("id") String id, @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
 //        UserLoad userLoad = Authenticator.tokenValidation(request);
@@ -129,7 +127,7 @@ public class TagResource {
         if (updateTag == null) {
             LOGGER.error("Time of not update tag: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST);
-            throw new WebApplicationException("Cannot put subscription type ", Response.Status.BAD_REQUEST);
+            throw new WebApplicationException("Cannot put tag ", Response.Status.BAD_REQUEST);
         }
         LOGGER.info("Time to PUT tag: " + (System.currentTimeMillis() - startTime)
                 + " milliseconds, statusCode:" + Response.Status.OK);

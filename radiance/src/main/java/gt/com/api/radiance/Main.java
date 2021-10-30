@@ -11,6 +11,7 @@ import gt.com.api.radiance.queries.UserQuery;
 import gt.com.api.radiance.resources.LoginResource;
 import gt.com.api.radiance.resources.SubscriptionTypeResource;
 import gt.com.api.radiance.resources.TagResource;
+import gt.com.api.radiance.resources.UserResource;
 import gt.com.api.radiance.verify.JwtRegister;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
@@ -85,6 +86,7 @@ public class Main extends Application<RadianceConfiguration> {
         environment.jersey().register(new LoginResource());
         environment.jersey().register(new SubscriptionTypeResource());
         environment.jersey().register(new TagResource());
+        environment.jersey().register(new UserResource());
     }
 
 }

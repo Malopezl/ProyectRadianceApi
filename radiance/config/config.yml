@@ -20,7 +20,7 @@ swagger:
 
 mongo:
   type: uriConfig
-  uri: mongodb://localhost:27017/radianceDB
+  uri: mongodb://localhost:27017/radiance
 
 secretKey: superSecret
 

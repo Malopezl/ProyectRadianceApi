@@ -117,7 +117,7 @@ public class UserController {
         user.setPhoneNumber(userModel.getPhoneNumber());
         if (userModel.getSubscription().getSubscriptionType().getName().equals("Base")) {
             user.setRole(Roles.Role.Lector.toString());
-        } else if (userModel.getSubscription().getSubscriptionType().getName().equals("Base")) {
+        } else if (userModel.getSubscription().getSubscriptionType().getName().equals("Advanced")) {
             user.setRole(Roles.Role.Editor.toString());
         }
         user.setImage(userModel.getImage());

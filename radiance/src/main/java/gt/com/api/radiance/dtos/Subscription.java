@@ -7,6 +7,7 @@
 package gt.com.api.radiance.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.morphia.annotations.Entity;
 import gt.com.api.radiance.entities.SubscriptionType;
 import java.util.Objects;
 import org.bson.types.ObjectId;
@@ -15,6 +16,7 @@ import org.bson.types.ObjectId;
  *
  * @author malopez
  */
+@Entity
 public class Subscription {
 
     private String finalizationDate;

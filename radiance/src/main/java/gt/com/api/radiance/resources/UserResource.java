@@ -88,7 +88,8 @@ public class UserResource {
 //        UserLoad userLoad = Authenticator.tokenValidation(request);
         //verification of required fields
         if (userModel.getName().equals("") || userModel.getUser().equals("") || userModel.getPassword().equals("")
-                || userModel.getRole().equals("")) {
+                || userModel.getSubscription() == null || userModel.getSubscription().getSubscriptionType() == null
+                || userModel.getSubscription().getSubscriptionType().getId() == null) {
             LOGGER.error("Time of not save user: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.NOT_ACCEPTABLE.getStatusCode());
             throw new WebApplicationException("Fields are missing ", Response.Status.NOT_ACCEPTABLE);

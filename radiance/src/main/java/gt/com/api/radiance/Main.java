@@ -5,10 +5,12 @@ import gt.com.api.radiance.dtos.ApiVersion;
 import gt.com.api.radiance.helper.MongoConfiguration;
 import gt.com.api.radiance.helper.MorphiaPackageBundle;
 import gt.com.api.radiance.helper.RadianceConfiguration;
+import gt.com.api.radiance.queries.PaymentQuery;
 import gt.com.api.radiance.queries.SubscriptionTypeQuery;
 import gt.com.api.radiance.queries.TagQuery;
 import gt.com.api.radiance.queries.UserQuery;
 import gt.com.api.radiance.resources.LoginResource;
+import gt.com.api.radiance.resources.PaymentResource;
 import gt.com.api.radiance.resources.SubscriptionTypeResource;
 import gt.com.api.radiance.resources.TagResource;
 import gt.com.api.radiance.resources.UserResource;
@@ -66,11 +68,13 @@ public class Main extends Application<RadianceConfiguration> {
         //Jwt
         JwtRegister jwtRegister = new JwtRegister();
         jwtRegister.register(environment);
+
         //MongoDB datastore
         Datastore datastore = morphiaBundle.getDatastore();
         UserQuery.setDataStore(datastore);
         SubscriptionTypeQuery.setDataStore(datastore);
         TagQuery.setDataStore(datastore);
+        PaymentQuery.setDataStore(datastore);
 
         //Configure CORS parameters
         final FilterRegistration.Dynamic cors
@@ -87,6 +91,7 @@ public class Main extends Application<RadianceConfiguration> {
         environment.jersey().register(new SubscriptionTypeResource());
         environment.jersey().register(new TagResource());
         environment.jersey().register(new UserResource());
+        environment.jersey().register(new PaymentResource());
     }
 
 }

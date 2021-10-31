@@ -61,12 +61,12 @@ public class Payment {
 
     @Override
     public String toString() {
-        return "Payments{" + "id=" + id + ", date=" + date + ", amount=" + amount + ", userId=" + userId + '}';
+        return "Payment{" + "id=" + id + ", date=" + date + ", amount=" + amount + ", userId=" + userId + '}';
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
+        int hash = 3;
         hash = 59 * hash + Objects.hashCode(this.id);
         hash = 59 * hash + Objects.hashCode(this.date);
         hash = 59 * hash + Objects.hashCode(this.amount);

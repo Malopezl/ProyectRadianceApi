@@ -41,7 +41,7 @@ Para visualizar el swagger podemos utilizar
 localización | link
 ---|---
 Localhost | [localhost swagger](http://localhost:8080/swagger)
-AWS | [aws sawagger](http://ec2-18-221-222-10.us-east-2.compute.amazonaws.com:8080/swagger)
+AWS | [aws swagger](http://ec2-18-221-222-10.us-east-2.compute.amazonaws.com:8080/swagger)
 
 ### Aviso
 

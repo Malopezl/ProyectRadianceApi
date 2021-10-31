@@ -11,7 +11,7 @@ function ayuda(){
 }
 
 function pullfunction {
-    git pull origin master
+    git pull origin $1
 }
 
 function compilejar {
@@ -31,7 +31,7 @@ elif [ "$1" == "--help" ] || [ "$1" == "-h" ]
     then
         ayuda
 else
-    pullfunction
+    pullfunction $1
     compilejar
-    execjar $1
+    execjar $2
 fi

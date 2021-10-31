@@ -1,25 +1,25 @@
 #!/bin/bash
 
 function hello(){
-    echo "         -`                    Proyecto Radiance API
-                  .o+`                   ------------------ 
-                 `ooo/                   Powered by Arch Linux 
-                `+oooo:                  Marcos Sierra 
-               `+oooooo:                 Sharon Gomez 
-               -+oooooo+:                Marvin lopez 
-             `/:-:++oooo+:               ------------------- 
-            `/++++/+++++++:              powered by ArchTeam
-           `/++++++++++++++:
-          `/+++ooooooooooooo/`
-         ./ooosssso++osssssso+`           
-        .oossssso-````/ossssss+`          
-       -osssssso.      :ssssssso.         
-      :osssssss/        osssso+++.        
-     /ossssssss/        +ssssooo/-        
-   `/ossssso+/:-        -:/+osssso+-      
-  `+sso+:-`                 `.-/+oso:     
- `++:.                           `-/+/
-"
+    echo "                   -                     Proyecto Radiance API"
+    echo "                  .o+                    ------------------ "
+    echo "                  ooo/                   Powered by Arch Linux "
+    echo "                 +oooo:                  Marcos Sierra "
+    echo "                +oooooo:                 Sharon Gomez "
+    echo "               /-+oooooo+:               Marvin lopez "
+    echo "              /:-:++oooo+:               ------------------- "
+    echo "             /++++/+++++++:              powered by ArchTeam"
+    echo "            /++++++++++++++:"
+    echo "           /+++ooooooooooooo/"
+    echo "         ./ooosssso++osssssso+           "
+    echo "        .oossssso-^^^^-/ossssss+          "
+    echo "       -osssssso.      :ssssssso.         "
+    echo "      :osssssss/        osssso+++.        "
+    echo "     /ossssssss/        +ssssooo/-       " 
+    echo "    /ossssso+/:-         -:/+osssso+-    "  
+    echo "   +sso+:-                   .-/+oso:  "   
+    echo " ++:.                            -/+/ "
+    echo ".                                     . "
 }
 
 

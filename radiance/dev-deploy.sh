@@ -1,5 +1,27 @@
 #!/bin/bash
 
+function hello(){
+    echo "                   -                     Proyecto Radiance API"
+    echo "                  .o+                    ------------------ "
+    echo "                  ooo/                   Powered by Arch Linux "
+    echo "                 +oooo:                  Marcos Sierra "
+    echo "                +oooooo:                 Sharon Gomez "
+    echo "               /-+oooooo+:               Marvin lopez "
+    echo "              /:-:++oooo+:               ------------------- "
+    echo "             /++++/+++++++:              powered by ArchTeam"
+    echo "            /++++++++++++++:"
+    echo "           /+++ooooooooooooo/"
+    echo "         ./ooosssso++osssssso+           "
+    echo "        .oossssso-^^^^-/ossssss+          "
+    echo "       -osssssso.      :ssssssso.         "
+    echo "      :osssssss/        osssso+++.        "
+    echo "     /ossssssss/        +ssssooo/-       " 
+    echo "    /ossssso+/:-         -:/+osssso+-    "  
+    echo "   +sso+:-                   .-/+oso:  "   
+    echo " ++:.                            -/+/ "
+    echo ".                                     . "
+}
+
 function ayuda(){
     echo "Este script se utiliza para realizar el pull de la rama del repositorio, compilar el jar con dependencias y lanzar la aplicacion"
     echo
@@ -31,6 +53,7 @@ elif [ "$1" == "--help" ] || [ "$1" == "-h" ]
     then
         ayuda
 else
+    hello
     pullfunction $1
     compilejar
     execjar $2

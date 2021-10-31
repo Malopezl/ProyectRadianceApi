@@ -38,7 +38,7 @@ public class UserController {
         List<UserModel> usersModel = new ArrayList();
         List<UserModel> list = new ArrayList();
         Pattern regexp = Pattern.compile(filter, Pattern.CASE_INSENSITIVE);
-        List<User> userList = UserQuery.getUserList(size.intValue(), page.intValue(), regexp);
+        List<User> userList = UserQuery.getUserList(regexp);
         if (userList == null) {
             return null;
         }
@@ -63,13 +63,6 @@ public class UserController {
         });
         users.setUsers(usersModel);
         users.setIsFirstPage(page == 1);
-//        Long elements = UserQuery.totalPages(regexp);
-//        Long pages;
-//        if (elements > size) {
-//            pages = elements / size;
-//        } else {
-//            pages = 1L;
-//        }
         BigDecimal pages = BigDecimal.valueOf(usersModel.size())
                 .divide(BigDecimal.valueOf(size), 0, RoundingMode.UP);
         Long totalPages = Long.valueOf(String.valueOf(pages));
@@ -106,6 +99,7 @@ public class UserController {
         userModel.setImage(user.getImage());
         userModel.setUser(user.getUser());
         userModel.setPassword("");
+        userModel.setIsVerified(user.getIsVerified());
         if (user.getSubscription() != null) {
             userModel.getSubscription().setFinalizationDate(new Date(Long.valueOf(
                     user.getSubscription().getFinalizationDate())).toString());
@@ -121,36 +115,26 @@ public class UserController {
         user.setName(userModel.getName());
         user.setMail(userModel.getMail());
         user.setPhoneNumber(userModel.getPhoneNumber());
-        switch (userModel.getRole()) {
-            case "1":
-                user.setRole(Roles.Role.Administrador.toString());
-                break;
-            case "2":
-                user.setRole(Roles.Role.Editor.toString());
-                break;
-            case "3":
-                user.setRole(Roles.Role.Lector.toString());
-                break;
-            default:
-                break;
+        if (userModel.getSubscription().getSubscriptionType().getName().equals("Base")) {
+            user.setRole(Roles.Role.Lector.toString());
+        } else if (userModel.getSubscription().getSubscriptionType().getName().equals("Base")) {
+            user.setRole(Roles.Role.Editor.toString());
         }
         user.setImage(userModel.getImage());
         user.setUser(userModel.getUser());
         user.setPassword(userModel.getPassword());
         user.setIsVerified(Boolean.FALSE);
         user.setIsDelete(Boolean.FALSE);
-        if (userModel.getSubscription() != null) {
-            Calendar c = Calendar.getInstance();
-            c.add(Calendar.DATE, 30);
-            Date date = c.getTime();
-            Long l = date.getTime();
-            user.getSubscription().setFinalizationDate(l.toString());
-            user.getSubscription().setStatus(Boolean.TRUE);
-            user.getSubscription().setSubscriptionTypeId(userModel.getSubscription().getSubscriptionType().getId());
-        }
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.DATE, 30);
+        Date date = c.getTime();
+        Long l = date.getTime();
+        user.getSubscription().setFinalizationDate(l.toString());
+        user.getSubscription().setStatus(Boolean.TRUE);
+        user.getSubscription().setSubscriptionTypeId(userModel.getSubscription().getSubscriptionType().getId());
         ObjectId userId = UserQuery.saveUser(user);
         if (userId == null) {
-            LOGGER.error("Failed to save tag");
+            LOGGER.error("Failed to save user");
             return null;
         }
         userModel.setUserId(userId.toString());
@@ -168,7 +152,6 @@ public class UserController {
         user.setName(userModel.getName());
         user.setMail(userModel.getMail());
         user.setPhoneNumber(userModel.getPhoneNumber());
-        //Se cambiara el rol?
         user.setImage(userModel.getImage());
         user.setUser(userModel.getUser());
         user.setPassword(userModel.getPassword());

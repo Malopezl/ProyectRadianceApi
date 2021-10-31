@@ -50,23 +50,21 @@ public final class UserQuery {
         }
     }
 
-    public static List<User> getUserList(int size, int page, Pattern regexp) {
+    public static List<User> getUserList(Pattern regexp) {
         List<User> users = new ArrayList();
-//        int p = size * (page - 1);
-//        FindOptions findOptions = new FindOptions().skip(p).limit(size);
-        Query<User> getUsers = ds.find(User.class).filter(Filters.eq("isDelete", Boolean.FALSE))
-                .filter(Filters.or(Filters.eq("name", regexp)));
-        AggregationPipeline pipeline = ds.createAggregation(User.class)
-                .match(getUsers)
-                .sort(Sort.ascending("name"))
-                .lookup("SubscriptionType", "subscription.subscriptionTypeId", "_id", "subscriptionType")
-                .unwind("subscriptionType");
-        Iterator<User> iterator = pipeline.aggregate(User.class);
-        while (iterator.hasNext()) {
-            User next = iterator.next();
-            users.add(next);
-        }
         try {
+            Query<User> getUsers = ds.find(User.class).filter(Filters.eq("isDelete", Boolean.FALSE))
+                    .filter(Filters.or(Filters.eq("name", regexp)));
+            AggregationPipeline pipeline = ds.createAggregation(User.class)
+                    .match(getUsers)
+                    .sort(Sort.ascending("name"))
+                    .lookup("SubscriptionType", "subscription.subscriptionTypeId", "_id", "subscriptionType")
+                    .unwind("subscriptionType");
+            Iterator<User> iterator = pipeline.aggregate(User.class);
+            while (iterator.hasNext()) {
+                User next = iterator.next();
+                users.add(next);
+            }
             return users;
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
@@ -74,24 +72,13 @@ public final class UserQuery {
         }
     }
 
-//    public static Long totalPages(Pattern regexp) {
-//        Long pages = 0L;
-//        Query<User> getTagsCount = ds.find(User.class).filter(Filters.eq("isDelete", Boolean.FALSE))
-//                .filter(Filters.or(Filters.eq("name", regexp)));
-//        try {
-//            pages = Long.valueOf(getTagsCount.iterator().toList().size());
-//        } catch (Exception e) {
-//            LOGGER.error(e.getMessage());
-//        }
-//        return pages;
-//    }
-
     public static User findUser(ObjectId id) {
         Query<User> getUser = ds.find(User.class)
-                .filter(Filters.and(Filters.eq("_id", id), Filters.eq("isDelete", false)));
+                .filter(Filters.eq("_id", id), Filters.eq("isDelete", false));
         try {
             return getUser.first();
         } catch (Exception e) {
+            LOGGER.error("userID: " + id.toString() + " " + e.getMessage());
             return null;
         }
     }

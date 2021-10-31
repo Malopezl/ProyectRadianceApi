@@ -7,10 +7,8 @@
 package gt.com.api.radiance.resources;
 
 import gt.com.api.radiance.controllers.SubscriptionTypeController;
-import gt.com.api.radiance.dtos.UserLoad;
-import gt.com.api.radiance.entities.SubscriptionType;
+import gt.com.api.radiance.dtos.SubscriptionTypeModel;
 import gt.com.api.radiance.verify.ApiVersionValidator;
-import gt.com.api.radiance.verify.Authenticator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import java.util.List;
@@ -45,29 +43,29 @@ public class SubscriptionTypeResource {
 
     @ApiOperation(value = "Get a subscription type list", notes = "Get a list of subscription types")
     @GET
-    public List<SubscriptionType> getSubscriptionType(@Context HttpServletRequest request) {
+    public List<SubscriptionTypeModel> getSubscriptionType(@Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
-        UserLoad userLoad = Authenticator.tokenValidation(request);
-        List<SubscriptionType> subscriptionType = SUBSCRIPTION_TYPE_CONTROLLER.getSubscriptionType();
-        if (subscriptionType == null) {
+//        UserLoad userLoad = Authenticator.tokenValidation(request);
+        List<SubscriptionTypeModel> subscriptionTypes = SUBSCRIPTION_TYPE_CONTROLLER.getSubscriptionType();
+        if (subscriptionTypes == null) {
             LOGGER.error("Time of not GET subscription type list: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST);
             throw new WebApplicationException("Cannot get subscription type list ", Response.Status.BAD_REQUEST);
         }
         LOGGER.info("Time to GET subscription type list: " + (System.currentTimeMillis() - startTime)
                 + " milliseconds, statusCode:" + Response.Status.OK);
-        return subscriptionType;
+        return subscriptionTypes;
     }
 
     @ApiOperation(value = "Get specific subscription type", notes = "Get specific subscription type by id")
     @GET
     @Path("/{id}")
-    public SubscriptionType getSubscriptionType(@PathParam("id") String id, @Context HttpServletRequest request) {
+    public SubscriptionTypeModel getSubscriptionType(@PathParam("id") String id, @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
-        UserLoad userLoad = Authenticator.tokenValidation(request);
-        SubscriptionType subscriptionType = SUBSCRIPTION_TYPE_CONTROLLER.getSubscriptionType(id);
+//        UserLoad userLoad = Authenticator.tokenValidation(request);
+        SubscriptionTypeModel subscriptionType = SUBSCRIPTION_TYPE_CONTROLLER.getSubscriptionType(id);
         if (subscriptionType == null) {
             LOGGER.error("Time of not GET subscription type: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST);
@@ -80,11 +78,11 @@ public class SubscriptionTypeResource {
 
     @ApiOperation(value = "Create subscription type", notes = "Insert new subscription type")
     @POST
-    public SubscriptionType postSubscriptionType(SubscriptionType subscriptionType,
+    public SubscriptionTypeModel postSubscriptionType(SubscriptionTypeModel subscriptionType,
             @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
-        UserLoad userLoad = Authenticator.tokenValidation(request);
+//        UserLoad userLoad = Authenticator.tokenValidation(request);
         //verification of required fields
         if (subscriptionType.getName().equals("") || subscriptionType.getPrice().equals("")
                 || subscriptionType.getDescription().equals("")) {
@@ -92,7 +90,7 @@ public class SubscriptionTypeResource {
                     + " milliseconds, statusCode:" + Response.Status.NOT_ACCEPTABLE.getStatusCode());
             throw new WebApplicationException("Fields are missing ", Response.Status.NOT_ACCEPTABLE);
         }
-        SubscriptionType newSubscriptionType = SUBSCRIPTION_TYPE_CONTROLLER.saveSubscriptionType(subscriptionType);
+        SubscriptionTypeModel newSubscriptionType = SUBSCRIPTION_TYPE_CONTROLLER.saveSubscriptionType(subscriptionType);
         if (newSubscriptionType == null) {
             LOGGER.error("Time of not save new subscription type: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST);
@@ -106,11 +104,11 @@ public class SubscriptionTypeResource {
     @ApiOperation(value = "Update specific subscription type", notes = "Modify specific subscription type")
     @PUT
     @Path("/{id}")
-    public SubscriptionType putSubscriptionType(SubscriptionType subscriptionType, @PathParam("id") String id,
+    public SubscriptionTypeModel putSubscriptionType(SubscriptionTypeModel subscriptionType, @PathParam("id") String id,
             @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
-        UserLoad userLoad = Authenticator.tokenValidation(request);
+//        UserLoad userLoad = Authenticator.tokenValidation(request);
         //verification of required fields
         if (subscriptionType.getName().equals("") || subscriptionType.getPrice().equals("")
                 || subscriptionType.getDescription().equals("")) {
@@ -119,13 +117,13 @@ public class SubscriptionTypeResource {
             throw new WebApplicationException("Fields are missing ", Response.Status.NOT_ACCEPTABLE);
         }
         //verificate subscription type exists
-        if (SUBSCRIPTION_TYPE_CONTROLLER.verifySubscriptionTypeExists(id)) {
+        if (!SUBSCRIPTION_TYPE_CONTROLLER.verifySubscriptionTypeExists(id)) {
             LOGGER.error("Time of not update suscription type: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.NOT_FOUND.getStatusCode());
             throw new WebApplicationException("Subscription type not found, subscriptionTypeId: " + id,
                     Response.Status.NOT_FOUND);
         }
-        SubscriptionType updateSubscriptionType = SUBSCRIPTION_TYPE_CONTROLLER.updateSubscriptionType(id,
+        SubscriptionTypeModel updateSubscriptionType = SUBSCRIPTION_TYPE_CONTROLLER.updateSubscriptionType(id,
                 subscriptionType);
         if (updateSubscriptionType == null) {
             LOGGER.error("Time of not update subscription type: " + (System.currentTimeMillis() - startTime)
@@ -143,9 +141,9 @@ public class SubscriptionTypeResource {
     public Response deleteSubscriptionType(@PathParam("id") String id, @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
-        UserLoad userLoad = Authenticator.tokenValidation(request);
+//        UserLoad userLoad = Authenticator.tokenValidation(request);
         //verificate subscription type exists
-        if (SUBSCRIPTION_TYPE_CONTROLLER.verifySubscriptionTypeExists(id)) {
+        if (!SUBSCRIPTION_TYPE_CONTROLLER.verifySubscriptionTypeExists(id)) {
             LOGGER.error("Time of not delete suscription type: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.NOT_FOUND.getStatusCode());
             throw new WebApplicationException("Subscription type not found, subscriptionTypeId: " + id,

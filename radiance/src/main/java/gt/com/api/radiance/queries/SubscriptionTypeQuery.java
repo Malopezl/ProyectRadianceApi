@@ -9,12 +9,10 @@ package gt.com.api.radiance.queries;
 import com.mongodb.client.model.ReturnDocument;
 import dev.morphia.Datastore;
 import dev.morphia.ModifyOptions;
-import dev.morphia.query.MorphiaCursor;
 import dev.morphia.query.Query;
 import dev.morphia.query.experimental.filters.Filters;
 import dev.morphia.query.experimental.updates.UpdateOperators;
 import gt.com.api.radiance.entities.SubscriptionType;
-import java.util.ArrayList;
 import java.util.List;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -37,20 +35,14 @@ public final class SubscriptionTypeQuery {
     }
 
     public static List<SubscriptionType> getSubscriptionType() {
-        Query<SubscriptionType> getType = ds.find(SubscriptionType.class)
-                .filter(Filters.and(Filters.eq("isDelete", false)));
-        List<SubscriptionType> list = new ArrayList<>();
-        MorphiaCursor<SubscriptionType> cursor = getType.iterator();
         try {
-            while (cursor.hasNext()) {
-                SubscriptionType next = cursor.next();
-                list.add(next);
-            }
+            Query<SubscriptionType> getTypes = ds.find(SubscriptionType.class)
+                    .filter(Filters.and(Filters.eq("isDelete", false)));
+            return getTypes.iterator().toList();
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return null;
         }
-        return list;
     }
 
     public static SubscriptionType getSubscriptionType(ObjectId id) {
@@ -59,13 +51,14 @@ public final class SubscriptionTypeQuery {
         try {
             return getType.first();
         } catch (Exception e) {
+            LOGGER.error(e.getMessage());
             return null;
         }
     }
 
     public static Boolean verifySubscriptionTypeExists(ObjectId id) {
         Query<SubscriptionType> verifyType = ds.find(SubscriptionType.class)
-                .filter(Filters.and(Filters.eq("_id", id), Filters.eq("isDelete", false)));
+                .filter(Filters.eq("_id", id), Filters.eq("isDelete", false));
         return verifyType.first() != null;
     }
 
@@ -86,7 +79,7 @@ public final class SubscriptionTypeQuery {
                     .modify(
                             UpdateOperators.set("name", subscriptionType.getName()),
                             UpdateOperators.set("price", subscriptionType.getPrice()),
-                            UpdateOperators.set("description", subscriptionType.getClass())
+                            UpdateOperators.set("description", subscriptionType.getDescription())
                     )
                     .execute(new ModifyOptions().returnDocument(ReturnDocument.AFTER));
             return updateSubscriptionType;
@@ -100,7 +93,7 @@ public final class SubscriptionTypeQuery {
         try {
             ds.find(SubscriptionType.class).filter(Filters.eq("_id", id))
                     .modify(
-                            UpdateOperators.set("isDelete", Boolean.FALSE)
+                            UpdateOperators.set("isDelete", Boolean.TRUE)
                     )
                     .execute(new ModifyOptions().returnDocument(ReturnDocument.AFTER));
             return true;

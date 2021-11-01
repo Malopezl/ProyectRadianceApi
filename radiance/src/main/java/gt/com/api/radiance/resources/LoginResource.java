@@ -57,7 +57,7 @@ public class LoginResource {
             if (loginModel == null) {
                 LOGGER.error("Time of not POST login" + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST.getStatusCode());
-                throw new WebApplicationException("Lector has no active subscription", Response.Status.BAD_REQUEST);
+                throw new WebApplicationException("Failed to create token", Response.Status.BAD_REQUEST);
             }
         } catch (Exception ex) {
             LOGGER.error(ex.getMessage());

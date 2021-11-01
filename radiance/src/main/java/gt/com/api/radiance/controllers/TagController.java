@@ -6,9 +6,11 @@
 
 package gt.com.api.radiance.controllers;
 
+import gt.com.api.radiance.dtos.TagModel;
 import gt.com.api.radiance.dtos.TagPage;
 import gt.com.api.radiance.entities.Tag;
 import gt.com.api.radiance.queries.TagQuery;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import org.bson.types.ObjectId;
@@ -33,7 +35,18 @@ public class TagController {
         if (tagList == null) {
             return null;
         }
-        tags.setTags(tagList);
+        List<TagModel> tagsModel = new ArrayList();
+        tagList.stream().map(tag -> {
+            TagModel tagModel = new TagModel();
+            tagModel.setTagId(tag.getId().toString());
+            tagModel.setName(tag.getName());
+            tagModel.setColor(tag.getColor());
+            tagModel.setIcon(tag.getIcon());
+            return tagModel;
+        }).forEachOrdered(tagModel -> {
+            tagsModel.add(tagModel);
+        });
+        tags.setTags(tagsModel);
         tags.setIsFirstPage(page == 1);
         Long elements = TagQuery.totalPages();
         Long pages;
@@ -52,20 +65,33 @@ public class TagController {
         return tags;
     }
 
-    public Tag getTag(String id) {
+    public TagModel getTag(String id) {
         ObjectId tagId = new ObjectId(id);
-        return TagQuery.findTag(tagId);
+        Tag tag = TagQuery.findTag(tagId);
+        if (tag == null) {
+            return null;
+        }
+        TagModel tagModel = new TagModel();
+        tagModel.setTagId(tag.getId().toString());
+        tagModel.setName(tag.getName());
+        tagModel.setColor(tag.getColor());
+        tagModel.setIcon(tag.getIcon());
+        return tagModel;
     }
 
-    public Tag saveTag(Tag tag) {
+    public TagModel saveTag(TagModel tagModel) {
+        Tag tag = new Tag();
+        tag.setName(tagModel.getName());
+        tag.setIcon(tagModel.getIcon());
+        tag.setColor(tagModel.getColor());
         tag.setIsDelete(Boolean.FALSE);
         ObjectId tagId = TagQuery.saveTag(tag);
         if (tagId == null) {
             LOGGER.error("Failed to save tag");
             return null;
         }
-        tag.setId(tagId);
-        return tag;
+        tagModel.setTagId(tagId.toString());
+        return tagModel;
     }
 
     public boolean verifyTagExists(String id) {
@@ -73,14 +99,19 @@ public class TagController {
         return TagQuery.verifyTagExists(taId);
     }
 
-    public Tag updateTag(String id, Tag tag) {
+    public TagModel updateTag(String id, TagModel tagModel) {
         ObjectId tagId = new ObjectId(id);
+        Tag tag = new Tag();
+        tag.setName(tagModel.getName());
+        tag.setIcon(tagModel.getIcon());
+        tag.setColor(tagModel.getColor());
         tag = TagQuery.updateTag(tag, tagId);
         if (tag == null) {
             LOGGER.error("Unable to update the tag");
             return null;
         }
-        return tag;
+        tagModel.setTagId(id);
+        return tagModel;
     }
 
     public Boolean deleteTag(String id) {

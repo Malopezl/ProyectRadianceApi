@@ -10,7 +10,6 @@ import gt.com.api.radiance.dtos.LoginModel;
 import gt.com.api.radiance.dtos.UserForLogin;
 import gt.com.api.radiance.dtos.UserLoad;
 import gt.com.api.radiance.entities.User;
-import gt.com.api.radiance.helper.Roles.Role;
 import gt.com.api.radiance.queries.UserQuery;
 import gt.com.api.radiance.verify.Token;
 import javax.servlet.http.HttpServletRequest;
@@ -35,7 +34,12 @@ public class LoginController {
             LOGGER.error("User not found");
             throw new Exception("User not found in DB");
         }
-        if (user.getRole().equals(Role.Editor.toString()) && !user.getSubscription().getStatus()) {
+        if (user.getRole().equals("")) {
+            LOGGER.error("User has no role");
+            return null;
+        }
+        if (user.getSubscription() != null && !user.getSubscription().getStatus()) {
+            LOGGER.error("User has no active subscription");
             return null;
         }
         loginModel.setRole(user.getRole());

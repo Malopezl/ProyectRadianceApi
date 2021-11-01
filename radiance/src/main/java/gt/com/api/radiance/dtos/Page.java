@@ -7,10 +7,6 @@
 package gt.com.api.radiance.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.ArrayList;
-import java.util.List;
-import javax.ws.rs.core.Link;
-import org.glassfish.jersey.linking.InjectLinks;
 
 /**
  *
@@ -63,9 +59,6 @@ public class Page {
      * Whether the current page is the last one.
      */
     private boolean isLastPage;
-
-    @InjectLinks()
-    private List<Link> links = new ArrayList();
 
     public Long getNumber() {
         return number;
@@ -141,14 +134,6 @@ public class Page {
 
     public void setIsLastPage(boolean isLastPage) {
         this.isLastPage = isLastPage;
-    }
-
-    public List<Link> getLinks() {
-        return links;
-    }
-
-    public void setLinks(List<Link> links) {
-        this.links = links;
     }
 
 }

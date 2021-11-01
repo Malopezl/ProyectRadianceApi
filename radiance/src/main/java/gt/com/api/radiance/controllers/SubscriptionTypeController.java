@@ -45,7 +45,7 @@ public class SubscriptionTypeController {
         return types;
     }
 
-    public SubscriptionTypeModel getSubscriptionType(String id) {
+    public static SubscriptionTypeModel getSubscriptionType(String id) {
         ObjectId subscriptionTypeId = new ObjectId(id);
         SubscriptionType subscriptionType = SubscriptionTypeQuery.getSubscriptionType(subscriptionTypeId);
         if (subscriptionType == null) {

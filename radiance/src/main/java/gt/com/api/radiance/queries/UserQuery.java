@@ -9,16 +9,14 @@ package gt.com.api.radiance.queries;
 import com.mongodb.client.model.ReturnDocument;
 import dev.morphia.Datastore;
 import dev.morphia.ModifyOptions;
-import dev.morphia.aggregation.AggregationPipeline;
+import dev.morphia.aggregation.experimental.stages.Lookup;
+import dev.morphia.aggregation.experimental.stages.Unwind;
+import dev.morphia.query.MorphiaCursor;
 import dev.morphia.query.Query;
-import dev.morphia.query.Sort;
 import dev.morphia.query.experimental.filters.Filters;
 import dev.morphia.query.experimental.updates.UpdateOperators;
 import gt.com.api.radiance.entities.User;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.regex.Pattern;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,22 +48,16 @@ public final class UserQuery {
         }
     }
 
-    public static List<User> getUserList(Pattern regexp) {
-        List<User> users = new ArrayList();
+    public static List<User> getUserList() {
         try {
-            Query<User> getUsers = ds.find(User.class).filter(Filters.eq("isDelete", Boolean.FALSE))
-                    .filter(Filters.or(Filters.eq("name", regexp)));
-            AggregationPipeline pipeline = ds.createAggregation(User.class)
-                    .match(getUsers)
-                    .sort(Sort.ascending("name"))
-                    .lookup("SubscriptionType", "subscription.subscriptionTypeId", "_id", "subscriptionType")
-                    .unwind("subscriptionType");
-            Iterator<User> iterator = pipeline.aggregate(User.class);
-            while (iterator.hasNext()) {
-                User next = iterator.next();
-                users.add(next);
-            }
-            return users;
+            MorphiaCursor<User> pipeline = ds.aggregate(User.class)
+                    .match(Filters.eq("isDelete", Boolean.FALSE), Filters.ne("subscription", null))
+                    .sort(dev.morphia.aggregation.experimental.stages.Sort.sort().descending("name"))
+                    .lookup(Lookup.lookup("SubscriptionType").localField("subscription.subscriptionTypeId")
+                            .foreignField("_id").as("subscriptionType"))
+                    .unwind(Unwind.unwind("subscriptionType"))
+                    .execute(User.class);
+            return pipeline.toList();
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return null;
@@ -122,7 +114,7 @@ public final class UserQuery {
             ds.find(User.class).filter(Filters.eq("_id", id))
                     .modify(
                             UpdateOperators.set("subscription.status", Boolean.FALSE),
-                            UpdateOperators.set("isDelete", Boolean.FALSE)
+                            UpdateOperators.set("isDelete", Boolean.TRUE)
                     )
                     .execute(new ModifyOptions().returnDocument(ReturnDocument.AFTER));
             return true;

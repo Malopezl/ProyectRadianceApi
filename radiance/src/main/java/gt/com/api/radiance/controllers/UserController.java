@@ -6,9 +6,13 @@
 
 package gt.com.api.radiance.controllers;
 
+import gt.com.api.radiance.dtos.Subscription;
+import gt.com.api.radiance.dtos.SubscriptionModel;
+import gt.com.api.radiance.dtos.SubscriptionTypeModel;
 import gt.com.api.radiance.dtos.UserModel;
 import gt.com.api.radiance.dtos.UserPage;
 import gt.com.api.radiance.entities.User;
+import gt.com.api.radiance.helper.FinalizationDate;
 import gt.com.api.radiance.helper.Roles;
 import gt.com.api.radiance.queries.UserQuery;
 import java.math.BigDecimal;
@@ -17,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Pattern;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,8 +40,7 @@ public class UserController {
         UserPage users = new UserPage();
         List<UserModel> usersModel = new ArrayList();
         List<UserModel> list = new ArrayList();
-        Pattern regexp = Pattern.compile(filter, Pattern.CASE_INSENSITIVE);
-        List<User> userList = UserQuery.getUserList(regexp);
+        List<User> userList = UserQuery.getUserList();
         if (userList == null) {
             return null;
         }
@@ -51,9 +53,20 @@ public class UserController {
             userModel.setRole(user.getRole());
             userModel.setImage(user.getImage());
             userModel.setUser(user.getUser());
-            userModel.getSubscription().setFinalizationDate(new Date(Long.valueOf(
-                    user.getSubscription().getFinalizationDate())).toString());
-            userModel.getSubscription().setSubscriptionType(user.getSubscriptionType());
+            userModel.setIsVerified(user.getIsVerified());
+            //Fill Subscription model
+            SubscriptionModel subscription = new SubscriptionModel();
+            subscription.setFinalizationDate(FinalizationDate.convertTime(
+                    user.getSubscription().getFinalizationDate()));
+            subscription.setStatus(user.getSubscription().getStatus());
+            //Fill SubscriptionType model
+            SubscriptionTypeModel type = new SubscriptionTypeModel();
+            type.setSubscriptionTypeId(user.getSubscriptionType().getId().toString());
+            type.setName(user.getSubscriptionType().getName());
+            type.setPrice(user.getSubscriptionType().getPrice());
+            type.setDescription(user.getSubscriptionType().getDescription());
+            subscription.setSubscriptionType(type);
+            userModel.setSubscription(subscription);
             return userModel;
         }).map(userModel -> {
             userModel.setPassword("");
@@ -101,11 +114,15 @@ public class UserController {
         userModel.setPassword("");
         userModel.setIsVerified(user.getIsVerified());
         if (user.getSubscription() != null) {
-            userModel.getSubscription().setFinalizationDate(new Date(Long.valueOf(
-                    user.getSubscription().getFinalizationDate())).toString());
-            userModel.getSubscription().setStatus(user.getSubscription().getStatus());
-            userModel.getSubscription().setSubscriptionType(SubscriptionTypeController.getSubscriptionType(
-                    user.getSubscription().getSubscriptionTypeId().toString()));
+            SubscriptionModel subscription = new SubscriptionModel();
+            subscription.setFinalizationDate(FinalizationDate.convertTime(
+                    user.getSubscription().getFinalizationDate()));
+            subscription.setStatus(user.getSubscription().getStatus());
+            //Get subscriptionType
+            SubscriptionTypeModel type = SubscriptionTypeController.getSubscriptionType(
+                    user.getSubscription().getSubscriptionTypeId().toString());
+            subscription.setSubscriptionType(type);
+            userModel.setSubscription(subscription);
         }
         return userModel;
     }
@@ -117,26 +134,34 @@ public class UserController {
         user.setPhoneNumber(userModel.getPhoneNumber());
         if (userModel.getSubscription().getSubscriptionType().getName().equals("Base")) {
             user.setRole(Roles.Role.Lector.toString());
+            userModel.setRole(Roles.Role.Lector.toString());
         } else if (userModel.getSubscription().getSubscriptionType().getName().equals("Advanced")) {
             user.setRole(Roles.Role.Editor.toString());
+            userModel.setRole(Roles.Role.Editor.toString());
         }
         user.setImage(userModel.getImage());
         user.setUser(userModel.getUser());
         user.setPassword(userModel.getPassword());
-        user.setIsVerified(Boolean.FALSE);
+        user.setIsVerified(Boolean.TRUE);
         user.setIsDelete(Boolean.FALSE);
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE, 30);
         Date date = c.getTime();
         Long l = date.getTime();
-        user.getSubscription().setFinalizationDate(l.toString());
-        user.getSubscription().setStatus(Boolean.TRUE);
-        user.getSubscription().setSubscriptionTypeId(userModel.getSubscription().getSubscriptionType().getId());
+        Subscription subscription = new Subscription();
+        subscription.setFinalizationDate(l.toString());
+        subscription.setStatus(Boolean.TRUE);
+        subscription.setSubscriptionTypeId(new ObjectId(
+                userModel.getSubscription().getSubscriptionType().getSubscriptionTypeId()));
+        user.setSubscription(subscription);
         ObjectId userId = UserQuery.saveUser(user);
         if (userId == null) {
             LOGGER.error("Failed to save user");
             return null;
         }
+        userModel.setIsVerified(Boolean.TRUE);
+        userModel.getSubscription().setFinalizationDate(l.toString());
+        userModel.getSubscription().setStatus(Boolean.TRUE);
         userModel.setUserId(userId.toString());
         return userModel;
     }

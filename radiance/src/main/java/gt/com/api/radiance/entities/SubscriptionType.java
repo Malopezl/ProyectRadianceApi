@@ -15,7 +15,7 @@ import org.bson.types.ObjectId;
  *
  * @author malopez
  */
-@Entity(value = "SuscriptionType", useDiscriminator = false)
+@Entity(value = "SubscriptionType", useDiscriminator = false)
 public class SubscriptionType {
 
     @Id

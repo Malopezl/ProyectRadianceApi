@@ -6,8 +6,6 @@
 
 package gt.com.api.radiance.dtos;
 
-import gt.com.api.radiance.entities.SubscriptionType;
-
 /**
  *
  * @author malopez
@@ -16,7 +14,7 @@ public class SubscriptionModel {
 
     private String finalizationDate;
     private Boolean status;
-    private SubscriptionType subscriptionType;
+    private SubscriptionTypeModel subscriptionType;
 
     public String getFinalizationDate() {
         return finalizationDate;
@@ -34,11 +32,11 @@ public class SubscriptionModel {
         this.status = status;
     }
 
-    public SubscriptionType getSubscriptionType() {
+    public SubscriptionTypeModel getSubscriptionType() {
         return subscriptionType;
     }
 
-    public void setSubscriptionType(SubscriptionType subscriptionType) {
+    public void setSubscriptionType(SubscriptionTypeModel subscriptionType) {
         this.subscriptionType = subscriptionType;
     }
 

@@ -16,7 +16,7 @@ import org.bson.types.ObjectId;
  *
  * @author malopez
  */
-@Entity
+@Entity(value = "Subscription", useDiscriminator = false)
 public class Subscription {
 
     private String finalizationDate;

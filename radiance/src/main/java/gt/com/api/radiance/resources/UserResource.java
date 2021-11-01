@@ -72,8 +72,8 @@ public class UserResource {
         UserModel userModel = USER_CONTROLLER.getUser(id);
         if (userModel == null) {
             LOGGER.error("Time of not GET user: " + (System.currentTimeMillis() - startTime)
-                    + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST);
-            throw new WebApplicationException("Cannot get user ", Response.Status.BAD_REQUEST);
+                    + " milliseconds, statusCode:" + Response.Status.NOT_FOUND);
+            throw new WebApplicationException("Cannot get user ", Response.Status.NOT_FOUND);
         }
         LOGGER.info("Time to GET user: " + (System.currentTimeMillis() - startTime)
                 + " milliseconds, statusCode:" + Response.Status.OK);
@@ -89,7 +89,7 @@ public class UserResource {
         //verification of required fields
         if (userModel.getName().equals("") || userModel.getUser().equals("") || userModel.getPassword().equals("")
                 || userModel.getSubscription() == null || userModel.getSubscription().getSubscriptionType() == null
-                || userModel.getSubscription().getSubscriptionType().getId() == null) {
+                || userModel.getSubscription().getSubscriptionType().getSubscriptionTypeId().equals("")) {
             LOGGER.error("Time of not save user: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.NOT_ACCEPTABLE.getStatusCode());
             throw new WebApplicationException("Fields are missing ", Response.Status.NOT_ACCEPTABLE);
@@ -120,7 +120,7 @@ public class UserResource {
             throw new WebApplicationException("Fields are missing ", Response.Status.NOT_ACCEPTABLE);
         }
         //verificate tag exists
-        if (USER_CONTROLLER.verifyUserExists(id)) {
+        if (!USER_CONTROLLER.verifyUserExists(id)) {
             LOGGER.error("Time of not update user: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.NOT_FOUND.getStatusCode());
             throw new WebApplicationException("User not found, userID: " + id,
@@ -145,7 +145,7 @@ public class UserResource {
         ApiVersionValidator.validate(request);
 //        UserLoad userLoad = Authenticator.tokenValidation(request);
         //verificate tag exists
-        if (USER_CONTROLLER.verifyUserExists(id)) {
+        if (!USER_CONTROLLER.verifyUserExists(id)) {
             LOGGER.error("Time of not delete user: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.NOT_FOUND.getStatusCode());
             throw new WebApplicationException("User not found, userID: " + id,

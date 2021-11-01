@@ -7,8 +7,8 @@
 package gt.com.api.radiance.resources;
 
 import gt.com.api.radiance.controllers.TagController;
+import gt.com.api.radiance.dtos.TagModel;
 import gt.com.api.radiance.dtos.TagPage;
-import gt.com.api.radiance.entities.Tag;
 import gt.com.api.radiance.verify.ApiVersionValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -65,11 +65,11 @@ public class TagResource {
     @ApiOperation(value = "Get specific tag", notes = "Get specific tag by id")
     @GET
     @Path("/{id}")
-    public Tag getTag(@PathParam("id") String id, @Context HttpServletRequest request) {
+    public TagModel getTag(@PathParam("id") String id, @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
 //        UserLoad userLoad = Authenticator.tokenValidation(request);
-        Tag tag = TAG_CONTROLLER.getTag(id);
+        TagModel tag = TAG_CONTROLLER.getTag(id);
         if (tag == null) {
             LOGGER.error("Time of not GET tag: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST);
@@ -82,7 +82,7 @@ public class TagResource {
 
     @ApiOperation(value = "Create tag", notes = "Insert new tag")
     @POST
-    public Tag postTag(Tag tag, @Context HttpServletRequest request) {
+    public TagModel postTag(TagModel tag, @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
 //        UserLoad userLoad = Authenticator.tokenValidation(request);
@@ -92,7 +92,7 @@ public class TagResource {
                     + " milliseconds, statusCode:" + Response.Status.NOT_ACCEPTABLE.getStatusCode());
             throw new WebApplicationException("Fields are missing ", Response.Status.NOT_ACCEPTABLE);
         }
-        Tag newTag = TAG_CONTROLLER.saveTag(tag);
+        TagModel newTag = TAG_CONTROLLER.saveTag(tag);
         if (newTag == null) {
             LOGGER.error("Time of not save new tag: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST);
@@ -106,7 +106,7 @@ public class TagResource {
     @ApiOperation(value = "Update specific tag", notes = "Modify specific tag")
     @PUT
     @Path("/{id}")
-    public Tag putTag(Tag tag, @PathParam("id") String id, @Context HttpServletRequest request) {
+    public TagModel putTag(TagModel tag, @PathParam("id") String id, @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
 //        UserLoad userLoad = Authenticator.tokenValidation(request);
@@ -117,13 +117,13 @@ public class TagResource {
             throw new WebApplicationException("Fields are missing ", Response.Status.NOT_ACCEPTABLE);
         }
         //verificate tag exists
-        if (TAG_CONTROLLER.verifyTagExists(id)) {
+        if (!TAG_CONTROLLER.verifyTagExists(id)) {
             LOGGER.error("Time of not update tag: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.NOT_FOUND.getStatusCode());
             throw new WebApplicationException("Tag not found, tagID: " + id,
                     Response.Status.NOT_FOUND);
         }
-        Tag updateTag = TAG_CONTROLLER.updateTag(id, tag);
+        TagModel updateTag = TAG_CONTROLLER.updateTag(id, tag);
         if (updateTag == null) {
             LOGGER.error("Time of not update tag: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST);
@@ -142,7 +142,7 @@ public class TagResource {
         ApiVersionValidator.validate(request);
 //        UserLoad userLoad = Authenticator.tokenValidation(request);
         //verificate tag exists
-        if (TAG_CONTROLLER.verifyTagExists(id)) {
+        if (!TAG_CONTROLLER.verifyTagExists(id)) {
             LOGGER.error("Time of not delete tag: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.NOT_FOUND.getStatusCode());
             throw new WebApplicationException("Tag not found, tagID: " + id,

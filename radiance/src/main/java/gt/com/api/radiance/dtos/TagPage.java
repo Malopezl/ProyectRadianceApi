@@ -6,9 +6,7 @@
 
 package gt.com.api.radiance.dtos;
 
-import gt.com.api.radiance.entities.Tag;
 import java.util.List;
-import java.util.Objects;
 
 /**
  *
@@ -16,44 +14,22 @@ import java.util.Objects;
  */
 public class TagPage  extends Page {
 
-    private List<Tag> tags;
+    private List<TagModel> tags;
 
     public TagPage() {
     }
 
-    public List<Tag> getTags() {
+    public List<TagModel> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(List<TagModel> tags) {
         this.tags = tags;
     }
 
     @Override
     public String toString() {
         return "TagPage{" + "tags=" + tags + '}';
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 53 * hash + Objects.hashCode(this.tags);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final TagPage other = (TagPage) obj;
-        return Objects.equals(this.tags, other.tags);
     }
 
 }

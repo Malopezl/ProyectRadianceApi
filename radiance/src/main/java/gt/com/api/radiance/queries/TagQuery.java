@@ -106,7 +106,7 @@ public final class TagQuery {
         try {
             ds.find(Tag.class).filter(Filters.eq("_id", id))
                     .modify(
-                            UpdateOperators.set("isDelete", Boolean.FALSE)
+                            UpdateOperators.set("isDelete", Boolean.TRUE)
                     )
                     .execute(new ModifyOptions().returnDocument(ReturnDocument.AFTER));
             return true;

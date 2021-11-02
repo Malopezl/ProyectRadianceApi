@@ -10,13 +10,10 @@ import gt.com.api.radiance.dtos.Subscription;
 import gt.com.api.radiance.dtos.SubscriptionModel;
 import gt.com.api.radiance.dtos.SubscriptionTypeModel;
 import gt.com.api.radiance.dtos.UserModel;
-import gt.com.api.radiance.dtos.UserPage;
 import gt.com.api.radiance.entities.User;
 import gt.com.api.radiance.helper.FinalizationDate;
 import gt.com.api.radiance.helper.Roles;
 import gt.com.api.radiance.queries.UserQuery;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,10 +33,10 @@ public class UserController {
     public UserController() {
     }
 
-    public UserPage getUserPage(Long size, Long page, String filter) {
-        UserPage users = new UserPage();
-        List<UserModel> usersModel = new ArrayList();
-        List<UserModel> list = new ArrayList();
+    public List<UserModel> getUsers(String filter) {
+//        UserPage users = new UserPage();
+        List<UserModel> users = new ArrayList();
+//        List<UserModel> list = new ArrayList();
         List<User> userList = UserQuery.getUserList();
         if (userList == null) {
             return null;
@@ -72,28 +69,28 @@ public class UserController {
             userModel.setPassword("");
             return userModel;
         }).forEachOrdered(userModel -> {
-            usersModel.add(userModel);
+            users.add(userModel);
         });
-        users.setUsers(usersModel);
-        users.setIsFirstPage(page == 1);
-        BigDecimal pages = BigDecimal.valueOf(usersModel.size())
-                .divide(BigDecimal.valueOf(size), 0, RoundingMode.UP);
-        Long totalPages = Long.valueOf(String.valueOf(pages));
-        int skip = (int) ((page - 1) * size);
-        int limit = size.intValue();
-        for (int i = skip; i < usersModel.size(); i++) {
-            list.add(usersModel.get(i));
-            if (list.size() == limit) {
-                break;
-            }
-        }
-        users.setIsLastPage(page.longValue() == totalPages.longValue());
-        users.setNumber(page);
-        users.setNumberOfElements(Long.valueOf(list.size()));
-        users.setIsPreviousPageAvailable(page > 1);
-        users.setSize(size);
-        users.setTotalElements(Long.valueOf(usersModel.size()));
-        users.setTotalPages(totalPages);
+//        users.setUsers(usersModel);
+//        users.setIsFirstPage(page == 1);
+//        BigDecimal pages = BigDecimal.valueOf(usersModel.size())
+//                .divide(BigDecimal.valueOf(size), 0, RoundingMode.UP);
+//        Long totalPages = Long.valueOf(String.valueOf(pages));
+//        int skip = (int) ((page - 1) * size);
+//        int limit = size.intValue();
+//        for (int i = skip; i < usersModel.size(); i++) {
+//            list.add(usersModel.get(i));
+//            if (list.size() == limit) {
+//                break;
+//            }
+//        }
+//        users.setIsLastPage(page.longValue() == totalPages.longValue());
+//        users.setNumber(page);
+//        users.setNumberOfElements(Long.valueOf(list.size()));
+//        users.setIsPreviousPageAvailable(page > 1);
+//        users.setSize(size);
+//        users.setTotalElements(Long.valueOf(usersModel.size()));
+//        users.setTotalPages(totalPages);
         return users;
     }
 

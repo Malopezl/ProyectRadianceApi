@@ -9,7 +9,6 @@ package gt.com.api.radiance.queries;
 import com.mongodb.client.model.ReturnDocument;
 import dev.morphia.Datastore;
 import dev.morphia.ModifyOptions;
-import dev.morphia.query.FindOptions;
 import dev.morphia.query.Query;
 import dev.morphia.query.experimental.filters.Filters;
 import dev.morphia.query.experimental.updates.UpdateOperators;
@@ -36,29 +35,29 @@ public final class TagQuery {
         ds = datastore;
     }
 
-    public static List<Tag> getTagList(int size, int page, Pattern regexp) {
-        int p = size * (page - 1);
-        FindOptions findOptions = new FindOptions().skip(p).limit(size);
+    public static List<Tag> getTagList(Pattern regexp) {
+//        int p = size * (page - 1);
+//        FindOptions findOptions = new FindOptions().skip(p).limit(size);
         Query<Tag> getTags = ds.find(Tag.class).filter(Filters.eq("isDelete", Boolean.FALSE))
                 .filter(Filters.or(Filters.eq("name", regexp), Filters.eq("color", regexp)));
         try {
-            return getTags.iterator(findOptions).toList();
+            return getTags.iterator().toList();
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return null;
         }
     }
 
-    public static Long totalPages() {
-        Long pages = 0L;
-        Query<Tag> getTagsCount = ds.find(Tag.class).filter(Filters.eq("isDelete", Boolean.FALSE));
-        try {
-            pages = Long.valueOf(getTagsCount.iterator().toList().size());
-        } catch (Exception e) {
-            LOGGER.error(e.getMessage());
-        }
-        return pages;
-    }
+//    public static Long totalPages() {
+//        Long pages = 0L;
+//        Query<Tag> getTagsCount = ds.find(Tag.class).filter(Filters.eq("isDelete", Boolean.FALSE));
+//        try {
+//            pages = Long.valueOf(getTagsCount.iterator().toList().size());
+//        } catch (Exception e) {
+//            LOGGER.error(e.getMessage());
+//        }
+//        return pages;
+//    }
 
     public static Tag findTag(ObjectId id) {
         Query<Tag> getTag = ds.find(Tag.class)

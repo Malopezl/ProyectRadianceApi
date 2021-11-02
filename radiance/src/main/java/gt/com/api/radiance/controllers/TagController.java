@@ -7,7 +7,6 @@
 package gt.com.api.radiance.controllers;
 
 import gt.com.api.radiance.dtos.TagModel;
-import gt.com.api.radiance.dtos.TagPage;
 import gt.com.api.radiance.entities.Tag;
 import gt.com.api.radiance.queries.TagQuery;
 import java.util.ArrayList;
@@ -28,10 +27,9 @@ public class TagController {
     public TagController() {
     }
 
-    public TagPage getTagPage(Long size, Long page, String filter) {
-        TagPage tags = new TagPage();
+    public List<TagModel> getTags(String filter) {
         Pattern regexp = Pattern.compile(filter, Pattern.CASE_INSENSITIVE);
-        List<Tag> tagList = TagQuery.getTagList(size.intValue(), page.intValue(), regexp);
+        List<Tag> tagList = TagQuery.getTagList(regexp);
         if (tagList == null) {
             return null;
         }
@@ -46,23 +44,23 @@ public class TagController {
         }).forEachOrdered(tagModel -> {
             tagsModel.add(tagModel);
         });
-        tags.setTags(tagsModel);
-        tags.setIsFirstPage(page == 1);
-        Long elements = TagQuery.totalPages();
-        Long pages;
-        if (elements > size) {
-            pages = elements / size;
-        } else {
-            pages = 1L;
-        }
-        tags.setIsLastPage(page.longValue() == pages.longValue());
-        tags.setNumber(page);
-        tags.setNumberOfElements(Long.valueOf(tagList.size()));
-        tags.setIsPreviousPageAvailable(page > 1);
-        tags.setSize(size);
-        tags.setTotalElements(elements);
-        tags.setTotalPages(pages);
-        return tags;
+//        tags.setTags(tagsModel);
+//        tags.setIsFirstPage(page == 1);
+//        Long elements = TagQuery.totalPages();
+//        Long pages;
+//        if (elements > size) {
+//            pages = elements / size;
+//        } else {
+//            pages = 1L;
+//        }
+//        tags.setIsLastPage(page.longValue() == pages.longValue());
+//        tags.setNumber(page);
+//        tags.setNumberOfElements(Long.valueOf(tagList.size()));
+//        tags.setIsPreviousPageAvailable(page > 1);
+//        tags.setSize(size);
+//        tags.setTotalElements(elements);
+//        tags.setTotalPages(pages);
+        return tagsModel;
     }
 
     public TagModel getTag(String id) {

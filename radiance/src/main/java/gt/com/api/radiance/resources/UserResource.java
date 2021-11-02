@@ -7,11 +7,13 @@
 package gt.com.api.radiance.resources;
 
 import gt.com.api.radiance.controllers.UserController;
+import gt.com.api.radiance.dtos.UserLoad;
 import gt.com.api.radiance.dtos.UserModel;
-import gt.com.api.radiance.dtos.UserPage;
 import gt.com.api.radiance.verify.ApiVersionValidator;
+import gt.com.api.radiance.verify.Authenticator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -45,20 +47,19 @@ public class UserResource {
 
     @ApiOperation(value = "Get a user list", notes = "Get a list of users")
     @GET
-    public UserPage getUsers(@QueryParam("page") @DefaultValue("1") Long page,
-            @QueryParam("size") @DefaultValue("20") Long size, @QueryParam("filter") @DefaultValue("") String filter,
+    public List<UserModel> getUsers(@QueryParam("filter") @DefaultValue("") String filter,
             @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
-//        UserLoad userLoad = Authenticator.tokenValidation(request);
-        UserPage users = USER_CONTROLLER.getUserPage(size, page, filter);
+        UserLoad userLoad = Authenticator.tokenValidation(request);
+        List<UserModel> users = USER_CONTROLLER.getUsers(filter);
         if (users == null) {
             LOGGER.error("Time of not GET user list: " + (System.currentTimeMillis() - startTime)
-                    + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST);
+                    + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST + " " + userLoad.toString());
             throw new WebApplicationException("Cannot get user list ", Response.Status.BAD_REQUEST);
         }
         LOGGER.info("Time to GET user list: " + (System.currentTimeMillis() - startTime)
-                + " milliseconds, statusCode:" + Response.Status.OK);
+                + " milliseconds, statusCode:" + Response.Status.OK + " " + userLoad.toString());
         return users;
     }
 
@@ -68,15 +69,15 @@ public class UserResource {
     public UserModel getUser(@PathParam("id") String id, @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
-//        UserLoad userLoad = Authenticator.tokenValidation(request);
+        UserLoad userLoad = Authenticator.tokenValidation(request);
         UserModel userModel = USER_CONTROLLER.getUser(id);
         if (userModel == null) {
             LOGGER.error("Time of not GET user: " + (System.currentTimeMillis() - startTime)
-                    + " milliseconds, statusCode:" + Response.Status.NOT_FOUND);
+                    + " milliseconds, statusCode:" + Response.Status.NOT_FOUND + " " + userLoad.toString());
             throw new WebApplicationException("Cannot get user ", Response.Status.NOT_FOUND);
         }
         LOGGER.info("Time to GET user: " + (System.currentTimeMillis() - startTime)
-                + " milliseconds, statusCode:" + Response.Status.OK);
+                + " milliseconds, statusCode:" + Response.Status.OK + " " + userLoad.toString());
         return userModel;
     }
 
@@ -85,23 +86,24 @@ public class UserResource {
     public UserModel postUser(UserModel userModel, @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
-//        UserLoad userLoad = Authenticator.tokenValidation(request);
+        UserLoad userLoad = Authenticator.tokenValidation(request);
         //verification of required fields
         if (userModel.getName().equals("") || userModel.getUser().equals("") || userModel.getPassword().equals("")
                 || userModel.getSubscription() == null || userModel.getSubscription().getSubscriptionType() == null
                 || userModel.getSubscription().getSubscriptionType().getSubscriptionTypeId().equals("")) {
             LOGGER.error("Time of not save user: " + (System.currentTimeMillis() - startTime)
-                    + " milliseconds, statusCode:" + Response.Status.NOT_ACCEPTABLE.getStatusCode());
+                    + " milliseconds, statusCode:" + Response.Status.NOT_ACCEPTABLE.getStatusCode()
+                    + " " + userLoad.toString());
             throw new WebApplicationException("Fields are missing ", Response.Status.NOT_ACCEPTABLE);
         }
         UserModel newUser = USER_CONTROLLER.saveUser(userModel);
         if (newUser == null) {
             LOGGER.error("Time of not save new user: " + (System.currentTimeMillis() - startTime)
-                    + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST);
+                    + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST + " " + userLoad.toString());
             throw new WebApplicationException("Cannot post user ", Response.Status.BAD_REQUEST);
         }
         LOGGER.info("Time to POST user: " + (System.currentTimeMillis() - startTime)
-                + " milliseconds, statusCode:" + Response.Status.OK);
+                + " milliseconds, statusCode:" + Response.Status.OK + " " + userLoad.toString());
         return newUser;
     }
 
@@ -112,28 +114,30 @@ public class UserResource {
             @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
-//        UserLoad userLoad = Authenticator.tokenValidation(request);
+        UserLoad userLoad = Authenticator.tokenValidation(request);
         //verification of required fields
         if (userModel.getName().equals("") || userModel.getUser().equals("") || userModel.getRole().equals("")) {
             LOGGER.error("Time of not update user: " + (System.currentTimeMillis() - startTime)
-                    + " milliseconds, statusCode:" + Response.Status.NOT_ACCEPTABLE.getStatusCode());
+                    + " milliseconds, statusCode:" + Response.Status.NOT_ACCEPTABLE.getStatusCode()
+                    + " " + userLoad.toString());
             throw new WebApplicationException("Fields are missing ", Response.Status.NOT_ACCEPTABLE);
         }
         //verificate tag exists
         if (!USER_CONTROLLER.verifyUserExists(id)) {
             LOGGER.error("Time of not update user: " + (System.currentTimeMillis() - startTime)
-                    + " milliseconds, statusCode:" + Response.Status.NOT_FOUND.getStatusCode());
+                    + " milliseconds, statusCode:" + Response.Status.NOT_FOUND.getStatusCode()
+                    + " " + userLoad.toString());
             throw new WebApplicationException("User not found, userID: " + id,
                     Response.Status.NOT_FOUND);
         }
         UserModel updateUser = USER_CONTROLLER.updateUser(id, userModel);
         if (updateUser == null) {
             LOGGER.error("Time of not update user: " + (System.currentTimeMillis() - startTime)
-                    + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST);
+                    + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST + " " + userLoad.toString());
             throw new WebApplicationException("Cannot put user ", Response.Status.BAD_REQUEST);
         }
         LOGGER.info("Time to PUT user: " + (System.currentTimeMillis() - startTime)
-                + " milliseconds, statusCode:" + Response.Status.OK);
+                + " milliseconds, statusCode:" + Response.Status.OK + " " + userLoad.toString());
         return updateUser;
     }
 
@@ -143,21 +147,22 @@ public class UserResource {
     public Response deleteUser(@PathParam("id") String id, @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
-//        UserLoad userLoad = Authenticator.tokenValidation(request);
+        UserLoad userLoad = Authenticator.tokenValidation(request);
         //verificate tag exists
         if (!USER_CONTROLLER.verifyUserExists(id)) {
             LOGGER.error("Time of not delete user: " + (System.currentTimeMillis() - startTime)
-                    + " milliseconds, statusCode:" + Response.Status.NOT_FOUND.getStatusCode());
+                    + " milliseconds, statusCode:" + Response.Status.NOT_FOUND.getStatusCode()
+                    + " " + userLoad.toString());
             throw new WebApplicationException("User not found, userID: " + id,
                     Response.Status.NOT_FOUND);
         }
         if (!USER_CONTROLLER.deleteUser(id)) {
             LOGGER.error("Time of not DELETE user: " + (System.currentTimeMillis() - startTime)
-                    + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST);
+                    + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST + " " + userLoad.toString());
             throw new WebApplicationException("Cannot delete user ", Response.Status.BAD_REQUEST);
         }
         LOGGER.info("Time to DELETE user: " + (System.currentTimeMillis() - startTime)
-                + " milliseconds, statusCode:" + Response.Status.OK);
+                + " milliseconds, statusCode:" + Response.Status.OK + " " + userLoad.toString());
         return Response.status(Response.Status.OK).entity("OK").build();
     }
 

@@ -122,7 +122,7 @@ public class UserResource {
                     + " " + userLoad.toString());
             throw new WebApplicationException("Fields are missing ", Response.Status.NOT_ACCEPTABLE);
         }
-        //verificate tag exists
+        //verificate user exists
         if (!USER_CONTROLLER.verifyUserExists(id)) {
             LOGGER.error("Time of not update user: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.NOT_FOUND.getStatusCode()
@@ -148,7 +148,7 @@ public class UserResource {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
         UserLoad userLoad = Authenticator.tokenValidation(request);
-        //verificate tag exists
+        //verificate user exists
         if (!USER_CONTROLLER.verifyUserExists(id)) {
             LOGGER.error("Time of not delete user: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.NOT_FOUND.getStatusCode()

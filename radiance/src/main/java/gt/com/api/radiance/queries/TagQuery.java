@@ -114,4 +114,15 @@ public final class TagQuery {
             return false;
         }
     }
+
+    public static List<Tag> findTags(List<ObjectId> ids, Pattern filter) {
+        try {
+            Query<Tag> getTags = ds.find(Tag.class).filter(Filters.in("_id", ids),
+                    Filters.eq("isDelete", Boolean.FALSE)).filter(Filters.or(Filters.eq("name", filter)));
+            return getTags.iterator().toList();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            return null;
+        }
+    }
 }

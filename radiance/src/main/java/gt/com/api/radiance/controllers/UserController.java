@@ -11,7 +11,7 @@ import gt.com.api.radiance.dtos.SubscriptionModel;
 import gt.com.api.radiance.dtos.SubscriptionTypeModel;
 import gt.com.api.radiance.dtos.UserModel;
 import gt.com.api.radiance.entities.User;
-import gt.com.api.radiance.helper.FinalizationDate;
+import gt.com.api.radiance.helper.FormatDate;
 import gt.com.api.radiance.helper.Roles;
 import gt.com.api.radiance.queries.UserQuery;
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class UserController {
             userModel.setIsVerified(user.getIsVerified());
             //Fill Subscription model
             SubscriptionModel subscription = new SubscriptionModel();
-            subscription.setFinalizationDate(FinalizationDate.convertTime(
+            subscription.setFinalizationDate(FormatDate.convertTime(
                     user.getSubscription().getFinalizationDate()));
             subscription.setStatus(user.getSubscription().getStatus());
             //Fill SubscriptionType model
@@ -112,7 +112,7 @@ public class UserController {
         userModel.setIsVerified(user.getIsVerified());
         if (user.getSubscription() != null) {
             SubscriptionModel subscription = new SubscriptionModel();
-            subscription.setFinalizationDate(FinalizationDate.convertTime(
+            subscription.setFinalizationDate(FormatDate.convertTime(
                     user.getSubscription().getFinalizationDate()));
             subscription.setStatus(user.getSubscription().getStatus());
             //Get subscriptionType
@@ -188,6 +188,20 @@ public class UserController {
     public Boolean deleteUser(String id) {
         ObjectId userId = new ObjectId(id);
         return UserQuery.deleteUser(userId);
+    }
+
+    public UserModel findUsername(String username) {
+        User user = UserQuery.findUser(username);
+        if (user == null) {
+            return null;
+        }
+        UserModel userModel = new UserModel();
+        userModel.setUserId(user.getId().toString());
+        userModel.setName(user.getName());
+        userModel.setMail(user.getMail());
+        userModel.setImage(user.getImage());
+        userModel.setUser(user.getUser());
+        return userModel;
     }
 
 }

@@ -24,14 +24,15 @@ public class Article {
     private ObjectId id;
     private String creationDate;
     private String tittle;
+    private String description;
     private String content;
     private ObjectId userId;
     private String lastModifyDate;
     private String image;
-    private List<ObjectId> tagsIds;
+    private List<ObjectId> tagsId;
     private Boolean isDelete;
     @JsonIgnore
-    private User user;
+    private List<User> user;
     @JsonIgnore
     private List<Tag> tags;
 
@@ -60,6 +61,14 @@ public class Article {
 
     public void setTittle(String tittle) {
         this.tittle = tittle;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getContent() {
@@ -94,12 +103,12 @@ public class Article {
         this.image = image;
     }
 
-    public List<ObjectId> getTagsIds() {
-        return tagsIds;
+    public List<ObjectId> getTagsId() {
+        return tagsId;
     }
 
-    public void setTagsIds(List<ObjectId> tagsIds) {
-        this.tagsIds = tagsIds;
+    public void setTagsId(List<ObjectId> tagsId) {
+        this.tagsId = tagsId;
     }
 
     public Boolean getIsDelete() {
@@ -110,11 +119,11 @@ public class Article {
         this.isDelete = isDelete;
     }
 
-    public User getUser() {
+    public List<User> getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(List<User> user) {
         this.user = user;
     }
 
@@ -128,23 +137,26 @@ public class Article {
 
     @Override
     public String toString() {
-        return "Articles{" + "id=" + id + ", creationDate=" + creationDate + ", tittle=" + tittle
+        return "Article{" + "id=" + id + ", creationDate=" + creationDate + ", tittle=" + tittle
                 + ", content=" + content + ", userId=" + userId + ", lastModifyDate=" + lastModifyDate
-                + ", image=" + image + ", tagsIds=" + tagsIds + ", isDelete=" + isDelete + '}';
+                + ", image=" + image + ", tagsId=" + tagsId + ", isDelete=" + isDelete + ", user=" + user
+                + ", tags=" + tags + '}';
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 67 * hash + Objects.hashCode(this.id);
-        hash = 67 * hash + Objects.hashCode(this.creationDate);
-        hash = 67 * hash + Objects.hashCode(this.tittle);
-        hash = 67 * hash + Objects.hashCode(this.content);
-        hash = 67 * hash + Objects.hashCode(this.userId);
-        hash = 67 * hash + Objects.hashCode(this.lastModifyDate);
-        hash = 67 * hash + Objects.hashCode(this.image);
-        hash = 67 * hash + Objects.hashCode(this.tagsIds);
-        hash = 67 * hash + Objects.hashCode(this.isDelete);
+        int hash = 7;
+        hash = 41 * hash + Objects.hashCode(this.id);
+        hash = 41 * hash + Objects.hashCode(this.creationDate);
+        hash = 41 * hash + Objects.hashCode(this.tittle);
+        hash = 41 * hash + Objects.hashCode(this.content);
+        hash = 41 * hash + Objects.hashCode(this.userId);
+        hash = 41 * hash + Objects.hashCode(this.lastModifyDate);
+        hash = 41 * hash + Objects.hashCode(this.image);
+        hash = 41 * hash + Objects.hashCode(this.tagsId);
+        hash = 41 * hash + Objects.hashCode(this.isDelete);
+        hash = 41 * hash + Objects.hashCode(this.user);
+        hash = 41 * hash + Objects.hashCode(this.tags);
         return hash;
     }
 
@@ -181,10 +193,16 @@ public class Article {
         if (!Objects.equals(this.userId, other.userId)) {
             return false;
         }
-        if (!Objects.equals(this.tagsIds, other.tagsIds)) {
+        if (!Objects.equals(this.tagsId, other.tagsId)) {
             return false;
         }
-        return Objects.equals(this.isDelete, other.isDelete);
+        if (!Objects.equals(this.isDelete, other.isDelete)) {
+            return false;
+        }
+        if (!Objects.equals(this.user, other.user)) {
+            return false;
+        }
+        return Objects.equals(this.tags, other.tags);
     }
 
 }

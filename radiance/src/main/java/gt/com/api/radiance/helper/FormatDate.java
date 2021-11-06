@@ -14,9 +14,9 @@ import java.util.Date;
  *
  * @author malopez
  */
-public final class FinalizationDate {
+public final class FormatDate {
 
-    private FinalizationDate() {
+    private FormatDate() {
     }
 
     public static String convertTime(String timestamp) {

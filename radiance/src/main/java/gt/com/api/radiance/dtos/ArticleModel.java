@@ -6,8 +6,6 @@
 
 package gt.com.api.radiance.dtos;
 
-import gt.com.api.radiance.entities.Tag;
-import gt.com.api.radiance.entities.User;
 import java.util.List;
 
 /**
@@ -19,11 +17,12 @@ public class ArticleModel {
     private String articleId;
     private String creationDate;
     private String tittle;
+    private String description;
     private String content;
-    private User user;
+    private UserModel user;
     private String lastModifyDate;
     private String image;
-    private List<Tag> tags;
+    private List<TagModel> tags;
 
     public String getArticleId() {
         return articleId;
@@ -49,6 +48,14 @@ public class ArticleModel {
         this.tittle = tittle;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getContent() {
         return content;
     }
@@ -57,11 +64,11 @@ public class ArticleModel {
         this.content = content;
     }
 
-    public User getUser() {
+    public UserModel getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserModel user) {
         this.user = user;
     }
 
@@ -81,11 +88,11 @@ public class ArticleModel {
         this.image = image;
     }
 
-    public List<Tag> getTags() {
+    public List<TagModel> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(List<TagModel> tags) {
         this.tags = tags;
     }
 

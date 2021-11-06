@@ -116,4 +116,25 @@ public class TagController {
         ObjectId tagId = new ObjectId(id);
         return TagQuery.deleteTag(tagId);
     }
+
+    public List<TagModel> findTags(List<ObjectId> ids, String filter) {
+        Pattern regexp = Pattern.compile(filter, Pattern.CASE_INSENSITIVE);
+        List<Tag> tagList = TagQuery.findTags(ids, regexp);
+        if (tagList == null) {
+            return null;
+        }
+        List<TagModel> tags = new ArrayList();
+        tagList.stream().map(tag -> {
+            TagModel tagModel = new TagModel();
+            tagModel.setTagId(tag.getId().toString());
+            tagModel.setName(tag.getName());
+            tagModel.setColor(tag.getColor());
+            tagModel.setIcon(tag.getIcon());
+            return tagModel;
+        }).forEachOrdered(tagModel -> {
+            tags.add(tagModel);
+        });
+        return tags;
+    }
+
 }

@@ -5,10 +5,12 @@ import gt.com.api.radiance.dtos.ApiVersion;
 import gt.com.api.radiance.helper.MongoConfiguration;
 import gt.com.api.radiance.helper.MorphiaPackageBundle;
 import gt.com.api.radiance.helper.RadianceConfiguration;
+import gt.com.api.radiance.queries.ArticleQuery;
 import gt.com.api.radiance.queries.PaymentQuery;
 import gt.com.api.radiance.queries.SubscriptionTypeQuery;
 import gt.com.api.radiance.queries.TagQuery;
 import gt.com.api.radiance.queries.UserQuery;
+import gt.com.api.radiance.resources.ArticleResource;
 import gt.com.api.radiance.resources.LoginResource;
 import gt.com.api.radiance.resources.PaymentResource;
 import gt.com.api.radiance.resources.SubscriptionTypeResource;
@@ -75,6 +77,7 @@ public class Main extends Application<RadianceConfiguration> {
         SubscriptionTypeQuery.setDataStore(datastore);
         TagQuery.setDataStore(datastore);
         PaymentQuery.setDataStore(datastore);
+        ArticleQuery.setDataStore(datastore);
 
         //Configure CORS parameters
         final FilterRegistration.Dynamic cors
@@ -92,6 +95,7 @@ public class Main extends Application<RadianceConfiguration> {
         environment.jersey().register(new TagResource());
         environment.jersey().register(new UserResource());
         environment.jersey().register(new PaymentResource());
+        environment.jersey().register(new ArticleResource());
     }
 
 }

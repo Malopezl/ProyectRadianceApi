@@ -26,13 +26,13 @@ public class LoginController {
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
 
     public LoginModel login(@Context HttpServletRequest request, UserForLogin userLogin) throws Exception {
-        LoginModel loginModel = new LoginModel();
-        UserLoad userLoad = new UserLoad();
-
         User user = UserQuery.findUser(userLogin.getUsername());
         if (user == null) {
             LOGGER.error("User not found");
             throw new Exception("User not found in DB");
+        }
+        if (!userLogin.getPassword().equals(user.getPassword())) {
+            throw new Exception("Incorrect password");
         }
         if (user.getRole().equals("")) {
             LOGGER.error("User has no role");
@@ -42,8 +42,10 @@ public class LoginController {
             LOGGER.error("User has no active subscription");
             return null;
         }
+        LoginModel loginModel = new LoginModel();
         loginModel.setRole(user.getRole());
-        userLoad.setUserId(user.getUser());
+        UserLoad userLoad = new UserLoad();
+        userLoad.setUser(user.getUser());
         userLoad.setRole(user.getRole());
 
         String token = Token.createToken(userLoad);

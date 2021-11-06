@@ -27,7 +27,7 @@ public final class Token {
         final JwtClaims claims = new JwtClaims();
         claims.setExpirationTimeMinutesInTheFuture(120);
         claims.setIssuedAtToNow();
-        claims.setClaim("user", userLoad.getUserId());
+        claims.setClaim("user", userLoad.getUser());
         claims.setClaim("role", userLoad.getRole());
 
         final JsonWebSignature jws = new JsonWebSignature();

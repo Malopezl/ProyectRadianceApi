@@ -6,6 +6,7 @@
 
 package gt.com.api.radiance.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.security.Principal;
 
 /**
@@ -14,18 +15,22 @@ import java.security.Principal;
  */
 public class UserLoad implements Principal {
 
-    private String userId;
+    private String user;
     private String role;
+    @JsonIgnore
+    private String exp;
+    @JsonIgnore
+    private String iat;
 
     public UserLoad() {
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUser() {
+        return user;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public String getRole() {
@@ -36,9 +41,25 @@ public class UserLoad implements Principal {
         this.role = role;
     }
 
+    public String getExp() {
+        return exp;
+    }
+
+    public void setExp(String exp) {
+        this.exp = exp;
+    }
+
+    public String getIat() {
+        return iat;
+    }
+
+    public void setIat(String iat) {
+        this.iat = iat;
+    }
+
     @Override
     public String toString() {
-        return "UserLoad{" + "userId=" + userId + ", role=" + role + '}';
+        return "UserLoad{" + "user=" + user + ", role=" + role + '}';
     }
 
     @Override

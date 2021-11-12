@@ -31,6 +31,7 @@ public class User {
     private String user;
     private Subscription subscription;
     private Boolean isVerified;
+    private Boolean isActive;
     private Boolean isDelete;
     @JsonIgnore
     private SubscriptionType subscriptionType;
@@ -118,6 +119,14 @@ public class User {
         this.isVerified = isVerified;
     }
 
+    public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+
     public Boolean getIsDelete() {
         return isDelete;
     }
@@ -138,8 +147,8 @@ public class User {
     public String toString() {
         return "User{" + "id=" + id + ", name=" + name + ", mail=" + mail + ", phoneNumber=" + phoneNumber
                 + ", role=" + role + ", image=" + image + ", password=" + password + ", user=" + user
-                + ", subscription=" + subscription + ", isVerified=" + isVerified + ", isDelete=" + isDelete
-                + ", subscriptionType=" + subscriptionType + '}';
+                + ", subscription=" + subscription + ", isVerified=" + isVerified + ", isActive=" + isActive
+                + ", isDelete=" + isDelete + ", subscriptionType=" + subscriptionType + '}';
     }
 
     @Override

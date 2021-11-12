@@ -28,14 +28,13 @@ public class PaymentController {
         return PaymentQuery.getPaymentList(new ObjectId(userId));
     }
 
-    public Payment savePayment(Payment payment) {
+    public static Boolean savePayment(Payment payment) {
         ObjectId paymentId = PaymentQuery.savePayment(payment);
         if (paymentId == null) {
             LOGGER.error("Failed to save payment");
-            return null;
+            return false;
         }
-        payment.setId(paymentId);
-        return payment;
+        return true;
     }
 
 }

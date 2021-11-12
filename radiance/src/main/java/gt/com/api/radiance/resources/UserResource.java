@@ -63,14 +63,14 @@ public class UserResource {
         return users;
     }
 
-    @ApiOperation(value = "Get specific user", notes = "Get specific user by id")
+    @ApiOperation(value = "Get specific user", notes = "Get specific user by username")
     @GET
-    @Path("/{id}")
-    public UserModel getUser(@PathParam("id") String id, @Context HttpServletRequest request) {
+    @Path("/{username}")
+    public UserModel getUser(@PathParam("username") String username, @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
         UserLoad userLoad = Authenticator.tokenValidation(request);
-        UserModel userModel = USER_CONTROLLER.getUser(id);
+        UserModel userModel = USER_CONTROLLER.getUser(username);
         if (userModel == null) {
             LOGGER.error("Time of not GET user: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.NOT_FOUND + " " + userLoad.toString());
@@ -86,32 +86,35 @@ public class UserResource {
     public UserModel postUser(UserModel userModel, @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
-        UserLoad userLoad = Authenticator.tokenValidation(request);
+//        UserLoad userLoad = Authenticator.tokenValidation(request);
         //verification of required fields
         if (userModel.getName().equals("") || userModel.getUser().equals("") || userModel.getPassword().equals("")
                 || userModel.getSubscription() == null || userModel.getSubscription().getSubscriptionType() == null
                 || userModel.getSubscription().getSubscriptionType().getSubscriptionTypeId().equals("")) {
             LOGGER.error("Time of not save user: " + (System.currentTimeMillis() - startTime)
-                    + " milliseconds, statusCode:" + Response.Status.NOT_ACCEPTABLE.getStatusCode()
-                    + " " + userLoad.toString());
+                    + " milliseconds, statusCode:" + Response.Status.NOT_ACCEPTABLE.getStatusCode());
             throw new WebApplicationException("Fields are missing ", Response.Status.NOT_ACCEPTABLE);
+        }
+        if (USER_CONTROLLER.verifyUsername(userModel.getUser())) {
+            LOGGER.error("Time of not save user: " + (System.currentTimeMillis() - startTime)
+                    + " milliseconds, statusCode:" + Response.Status.CONFLICT);
+            throw new WebApplicationException("This username already exists ", Response.Status.CONFLICT);
         }
         UserModel newUser = USER_CONTROLLER.saveUser(userModel);
         if (newUser == null) {
             LOGGER.error("Time of not save new user: " + (System.currentTimeMillis() - startTime)
-                    + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST + " " + userLoad.toString());
+                    + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST);
             throw new WebApplicationException("Cannot post user ", Response.Status.BAD_REQUEST);
         }
         LOGGER.info("Time to POST user: " + (System.currentTimeMillis() - startTime)
-                + " milliseconds, statusCode:" + Response.Status.OK + " " + userLoad.toString());
+                + " milliseconds, statusCode:" + Response.Status.OK);
         return newUser;
     }
 
     @ApiOperation(value = "Update specific user", notes = "Modify specific user")
     @PUT
     @Path("/{id}")
-    public UserModel putUser(UserModel userModel, @PathParam("id") String id,
-            @Context HttpServletRequest request) {
+    public UserModel putUser(UserModel userModel, @PathParam("id") String id, @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
         UserLoad userLoad = Authenticator.tokenValidation(request);

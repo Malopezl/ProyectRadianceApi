@@ -10,6 +10,7 @@ import gt.com.api.radiance.dtos.Subscription;
 import gt.com.api.radiance.dtos.SubscriptionModel;
 import gt.com.api.radiance.dtos.SubscriptionTypeModel;
 import gt.com.api.radiance.dtos.UserModel;
+import gt.com.api.radiance.entities.Payment;
 import gt.com.api.radiance.entities.User;
 import gt.com.api.radiance.helper.FormatDate;
 import gt.com.api.radiance.helper.Roles;
@@ -94,14 +95,14 @@ public class UserController {
         return users;
     }
 
-    public UserModel getUser(String id) {
-        ObjectId userId = new ObjectId(id);
-        User user = UserQuery.findUser(userId);
+    public UserModel getUser(String username) {
+//        ObjectId userId = new ObjectId(id);
+        User user = UserQuery.findUser(username);
         if (user == null) {
             return null;
         }
         UserModel userModel = new UserModel();
-        userModel.setUserId(userId.toString());
+        userModel.setUserId(user.getId().toString());
         userModel.setName(user.getName());
         userModel.setMail(user.getMail());
         userModel.setPhoneNumber(user.getPhoneNumber());
@@ -140,6 +141,7 @@ public class UserController {
         user.setUser(userModel.getUser());
         user.setPassword(userModel.getPassword());
         user.setIsVerified(Boolean.TRUE);
+        user.setIsActive(Boolean.TRUE);
         user.setIsDelete(Boolean.FALSE);
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE, 30);
@@ -154,6 +156,15 @@ public class UserController {
         ObjectId userId = UserQuery.saveUser(user);
         if (userId == null) {
             LOGGER.error("Failed to save user");
+            return null;
+        }
+        Payment payment = new Payment();
+        payment.setDate(String.valueOf(System.currentTimeMillis()));
+        payment.setAmount(userModel.getSubscription().getSubscriptionType().getPrice());
+        payment.setUserId(userId);
+        if (!PaymentController.savePayment(payment)) {
+            UserQuery.deleteUser(userId);
+            LOGGER.error("Failed to save payment, deleting user");
             return null;
         }
         userModel.setIsVerified(Boolean.TRUE);
@@ -175,8 +186,6 @@ public class UserController {
         user.setMail(userModel.getMail());
         user.setPhoneNumber(userModel.getPhoneNumber());
         user.setImage(userModel.getImage());
-        user.setUser(userModel.getUser());
-        user.setPassword(userModel.getPassword());
         user = UserQuery.updateUser(user, userId);
         if (user == null) {
             LOGGER.error("Unable to update the user");
@@ -202,6 +211,10 @@ public class UserController {
         userModel.setImage(user.getImage());
         userModel.setUser(user.getUser());
         return userModel;
+    }
+
+    public boolean verifyUsername(String username) {
+        return UserQuery.verifyUsername(username);
     }
 
 }

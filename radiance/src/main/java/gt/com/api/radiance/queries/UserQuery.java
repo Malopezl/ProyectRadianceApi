@@ -39,7 +39,7 @@ public final class UserQuery {
 
     public static User findUser(String username) {
         Query<User> getUser = ds.find(User.class).filter(Filters.eq("user", username),
-                Filters.eq("isDelete", Boolean.FALSE));
+                Filters.eq("isDelete", Boolean.FALSE), Filters.eq("isActive", Boolean.TRUE));
         try {
             return getUser.first();
         } catch (Exception e) {
@@ -51,7 +51,8 @@ public final class UserQuery {
     public static List<User> getUserList() {
         try {
             MorphiaCursor<User> pipeline = ds.aggregate(User.class)
-                    .match(Filters.eq("isDelete", Boolean.FALSE), Filters.ne("subscription", null))
+                    .match(Filters.eq("isDelete", Boolean.FALSE), Filters.eq("isActive", Boolean.TRUE),
+                            Filters.ne("subscription", null))
                     .sort(dev.morphia.aggregation.experimental.stages.Sort.sort().descending("name"))
                     .lookup(Lookup.lookup("SubscriptionType").localField("subscription.subscriptionTypeId")
                             .foreignField("_id").as("subscriptionType"))
@@ -64,16 +65,16 @@ public final class UserQuery {
         }
     }
 
-    public static User findUser(ObjectId id) {
-        Query<User> getUser = ds.find(User.class)
-                .filter(Filters.eq("_id", id), Filters.eq("isDelete", false));
-        try {
-            return getUser.first();
-        } catch (Exception e) {
-            LOGGER.error("userID: " + id.toString() + " " + e.getMessage());
-            return null;
-        }
-    }
+//    public static User findUser(ObjectId id) {
+//        Query<User> getUser = ds.find(User.class)
+//                .filter(Filters.eq("_id", id), Filters.eq("isDelete", false), Filters.eq("isActive", Boolean.TRUE));
+//        try {
+//            return getUser.first();
+//        } catch (Exception e) {
+//            LOGGER.error("userID: " + id.toString() + " " + e.getMessage());
+//            return null;
+//        }
+//    }
 
     public static ObjectId saveUser(User user) {
         try {
@@ -86,7 +87,8 @@ public final class UserQuery {
 
     public static Boolean verifyUserExists(ObjectId id) {
         Query<User> verifyUser = ds.find(User.class)
-                .filter(Filters.and(Filters.eq("_id", id), Filters.eq("isDelete", false)));
+                .filter(Filters.and(Filters.eq("_id", id), Filters.eq("isDelete", false),
+                        Filters.eq("isActive", Boolean.TRUE)));
         return verifyUser.first() != null;
     }
 
@@ -98,8 +100,7 @@ public final class UserQuery {
                             UpdateOperators.set("name", user.getName()),
                             UpdateOperators.set("phoneNumber", user.getPhoneNumber()),
                             UpdateOperators.set("mail", user.getMail()),
-                            UpdateOperators.set("image", user.getImage()),
-                            UpdateOperators.set("user", user.getUser())
+                            UpdateOperators.set("image", user.getImage())
                     )
                     .execute(new ModifyOptions().returnDocument(ReturnDocument.AFTER));
             return updateUser;
@@ -114,6 +115,7 @@ public final class UserQuery {
             ds.find(User.class).filter(Filters.eq("_id", id))
                     .modify(
                             UpdateOperators.set("subscription.status", Boolean.FALSE),
+                            UpdateOperators.set("isActive", Boolean.FALSE),
                             UpdateOperators.set("isDelete", Boolean.TRUE)
                     )
                     .execute(new ModifyOptions().returnDocument(ReturnDocument.AFTER));
@@ -122,6 +124,13 @@ public final class UserQuery {
             LOGGER.error(e.getMessage());
             return false;
         }
+    }
+
+    public static Boolean verifyUsername(String username) {
+        Query<User> verifyUsername = ds.find(User.class)
+                .filter(Filters.and(Filters.eq("user", username), Filters.eq("isDelete", false),
+                        Filters.eq("isActive", Boolean.TRUE)));
+        return verifyUsername.first() != null;
     }
 
 }

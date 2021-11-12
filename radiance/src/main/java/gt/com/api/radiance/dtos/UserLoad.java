@@ -6,7 +6,6 @@
 
 package gt.com.api.radiance.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.security.Principal;
 
 /**
@@ -17,9 +16,7 @@ public class UserLoad implements Principal {
 
     private String user;
     private String role;
-    @JsonIgnore
     private String exp;
-    @JsonIgnore
     private String iat;
 
     public UserLoad() {

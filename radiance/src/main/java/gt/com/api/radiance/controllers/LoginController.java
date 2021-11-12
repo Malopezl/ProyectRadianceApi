@@ -13,6 +13,7 @@ import gt.com.api.radiance.entities.Payment;
 import gt.com.api.radiance.entities.SubscriptionType;
 import gt.com.api.radiance.entities.User;
 import gt.com.api.radiance.helper.Roles;
+import gt.com.api.radiance.queries.SubscriptionTypeQuery;
 import gt.com.api.radiance.queries.UserQuery;
 import gt.com.api.radiance.verify.Token;
 import javax.servlet.http.HttpServletRequest;

@@ -15,7 +15,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -58,27 +57,27 @@ public class PaymentResource {
         return paymentList;
     }
 
-    @ApiOperation(value = "Create payment", notes = "Insert new payment")
-    @POST
-    public Payment postPayment(Payment payment, @Context HttpServletRequest request) {
-        long startTime = System.currentTimeMillis();
-        ApiVersionValidator.validate(request);
-//        UserLoad userLoad = Authenticator.tokenValidation(request);
-        //verification of required fields
-        if (payment.getDate().equals("") || payment.getAmount().equals("") || payment.getId() != null) {
-            LOGGER.error("Time of not save payment: " + (System.currentTimeMillis() - startTime)
-                    + " milliseconds, statusCode:" + Response.Status.NOT_ACCEPTABLE.getStatusCode());
-            throw new WebApplicationException("Fields are missing ", Response.Status.NOT_ACCEPTABLE);
-        }
-        Payment newPayment = PAYMENT_CONTROLLER.savePayment(payment);
-        if (newPayment == null) {
-            LOGGER.error("Time of not save new payment: " + (System.currentTimeMillis() - startTime)
-                    + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST);
-            throw new WebApplicationException("Cannot post payment ", Response.Status.BAD_REQUEST);
-        }
-        LOGGER.info("Time to POST payment: " + (System.currentTimeMillis() - startTime)
-                + " milliseconds, statusCode:" + Response.Status.OK);
-        return newPayment;
-    }
+//    @ApiOperation(value = "Create payment", notes = "Insert new payment")
+//    @POST
+//    public Payment postPayment(Payment payment, @Context HttpServletRequest request) {
+//        long startTime = System.currentTimeMillis();
+//        ApiVersionValidator.validate(request);
+////        UserLoad userLoad = Authenticator.tokenValidation(request);
+//        //verification of required fields
+//        if (payment.getDate().equals("") || payment.getAmount().equals("") || payment.getId() != null) {
+//            LOGGER.error("Time of not save payment: " + (System.currentTimeMillis() - startTime)
+//                    + " milliseconds, statusCode:" + Response.Status.NOT_ACCEPTABLE.getStatusCode());
+//            throw new WebApplicationException("Fields are missing ", Response.Status.NOT_ACCEPTABLE);
+//        }
+//        Payment newPayment = PAYMENT_CONTROLLER.savePayment(payment);
+//        if (newPayment == null) {
+//            LOGGER.error("Time of not save new payment: " + (System.currentTimeMillis() - startTime)
+//                    + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST);
+//            throw new WebApplicationException("Cannot post payment ", Response.Status.BAD_REQUEST);
+//        }
+//        LOGGER.info("Time to POST payment: " + (System.currentTimeMillis() - startTime)
+//                + " milliseconds, statusCode:" + Response.Status.OK);
+//        return newPayment;
+//    }
 
 }

@@ -9,7 +9,10 @@ package gt.com.api.radiance.controllers;
 import gt.com.api.radiance.dtos.LoginModel;
 import gt.com.api.radiance.dtos.UserForLogin;
 import gt.com.api.radiance.dtos.UserLoad;
+import gt.com.api.radiance.entities.Payment;
+import gt.com.api.radiance.entities.SubscriptionType;
 import gt.com.api.radiance.entities.User;
+import gt.com.api.radiance.helper.Roles;
 import gt.com.api.radiance.queries.UserQuery;
 import gt.com.api.radiance.verify.Token;
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +44,19 @@ public class LoginController {
         if (user.getSubscription() != null && !user.getSubscription().getStatus()) {
             LOGGER.error("User has no active subscription");
             return null;
+        }
+        if (!user.getRole().equals(Roles.Role.Administrador.toString())
+                && Long.valueOf(user.getSubscription().getFinalizationDate()) >= System.currentTimeMillis()) {
+            Payment payment = new Payment();
+            payment.setDate(String.valueOf(System.currentTimeMillis()));
+            SubscriptionType subscriptionType = SubscriptionTypeQuery.getSubscriptionType(
+                    user.getSubscription().getSubscriptionTypeId());
+            payment.setAmount(subscriptionType.getPrice());
+            payment.setUserId(user.getId());
+            if (!PaymentController.savePayment(payment)) {
+                LOGGER.error("Failed to save payment, deleting user");
+                throw new Exception("Cannot save payment for user: " + userLogin.getUsername());
+            }
         }
         LoginModel loginModel = new LoginModel();
         loginModel.setRole(user.getRole());

@@ -114,7 +114,8 @@ public class UserResource {
     @ApiOperation(value = "Update specific user", notes = "Modify specific user")
     @PUT
     @Path("/{id}")
-    public UserModel putUser(UserModel userModel, @PathParam("id") String id, @Context HttpServletRequest request) {
+    public UserModel putUser(UserModel userModel, @PathParam("id") String id,
+            @QueryParam("cancelSubscription") Boolean cancel, @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
         UserLoad userLoad = Authenticator.tokenValidation(request);
@@ -133,15 +134,26 @@ public class UserResource {
             throw new WebApplicationException("User not found, userID: " + id,
                     Response.Status.NOT_FOUND);
         }
-        UserModel updateUser = USER_CONTROLLER.updateUser(id, userModel);
-        if (updateUser == null) {
-            LOGGER.error("Time of not update user: " + (System.currentTimeMillis() - startTime)
-                    + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST + " " + userLoad.toString());
-            throw new WebApplicationException("Cannot put user ", Response.Status.BAD_REQUEST);
+        if (!cancel) {
+            UserModel updateUser = USER_CONTROLLER.updateUser(id, userModel);
+            if (updateUser == null) {
+                LOGGER.error("Time of not update user: " + (System.currentTimeMillis() - startTime)
+                        + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST + " " + userLoad.toString());
+                throw new WebApplicationException("Cannot put user ", Response.Status.BAD_REQUEST);
+            }
+            LOGGER.info("Time to PUT user: " + (System.currentTimeMillis() - startTime)
+                    + " milliseconds, statusCode:" + Response.Status.OK + " " + userLoad.toString());
+            return updateUser;
+        } else {
+            if (!USER_CONTROLLER.cancelSubscription(id, userModel)) {
+                LOGGER.error("Time of not cancel subscription: " + (System.currentTimeMillis() - startTime)
+                        + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST + " " + userLoad.toString());
+                throw new WebApplicationException("Unable to cancel subscription ", Response.Status.BAD_REQUEST);
+            }
+            LOGGER.info("Time to cancel subscription: " + (System.currentTimeMillis() - startTime)
+                    + " milliseconds, statusCode:" + Response.Status.OK + " " + userLoad.toString());
+            return userModel;
         }
-        LOGGER.info("Time to PUT user: " + (System.currentTimeMillis() - startTime)
-                + " milliseconds, statusCode:" + Response.Status.OK + " " + userLoad.toString());
-        return updateUser;
     }
 
     @ApiOperation(value = "Delete user", notes = "Soft delete specific user")

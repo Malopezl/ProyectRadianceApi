@@ -217,4 +217,13 @@ public class UserController {
         return UserQuery.verifyUsername(username);
     }
 
+    public boolean cancelSubscription(String id, UserModel userModel) {
+        ObjectId userId = new ObjectId(id);
+        if (!UserQuery.cancelSubscription(userId)) {
+            return false;
+        }
+        userModel.getSubscription().setStatus(Boolean.FALSE);
+        return true;
+    }
+
 }

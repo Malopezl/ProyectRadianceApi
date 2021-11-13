@@ -42,9 +42,12 @@ public class LoginController {
             LOGGER.error("User has no role");
             return null;
         }
-        if (user.getSubscription() != null && !user.getSubscription().getStatus()) {
-            LOGGER.error("User has no active subscription");
-            return null;
+        if (user.getSubscription() != null) {
+            if (Long.valueOf(user.getSubscription().getFinalizationDate()) <= System.currentTimeMillis()
+                    && !user.getSubscription().getStatus()) {
+                LOGGER.error("User has no active subscription");
+                return null;
+            }
         }
         if (!user.getRole().equals(Roles.Role.Administrador.toString())
                 && Long.valueOf(user.getSubscription().getFinalizationDate()) <= System.currentTimeMillis()) {

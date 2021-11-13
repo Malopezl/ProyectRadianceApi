@@ -133,4 +133,15 @@ public final class UserQuery {
         return verifyUsername.first() != null;
     }
 
+    public static Boolean cancelSubscription(ObjectId id) {
+        try {
+            ds.find(User.class).filter(Filters.eq("_id", id))
+                    .modify(UpdateOperators.set("subscription.status", Boolean.FALSE))
+                    .execute(new ModifyOptions().returnDocument(ReturnDocument.AFTER));
+            return true;
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            return false;
+        }
+    }
 }

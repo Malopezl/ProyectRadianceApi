@@ -51,7 +51,7 @@ public final class Authenticator {
                     ? "Invalid json data in token " + e.getMessage()
                     : "Invalid token " + e.getMessage(), Response.Status.UNAUTHORIZED);
         }
-        if (Long.valueOf(user.getExp()) < System.currentTimeMillis()) {
+        if (Long.valueOf(user.getExp()) > System.currentTimeMillis()) {
             LOGGER.error("expired token");
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }

@@ -47,7 +47,8 @@ public class LoginController {
             return null;
         }
         if (!user.getRole().equals(Roles.Role.Administrador.toString())
-                && Long.valueOf(user.getSubscription().getFinalizationDate()) >= System.currentTimeMillis()) {
+                && Long.valueOf(user.getSubscription().getFinalizationDate()) <= System.currentTimeMillis()) {
+            LOGGER.info(String.valueOf(System.currentTimeMillis()));
             Payment payment = new Payment();
             payment.setDate(String.valueOf(System.currentTimeMillis()));
             SubscriptionType subscriptionType = SubscriptionTypeQuery.getSubscriptionType(

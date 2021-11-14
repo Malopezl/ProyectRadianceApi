@@ -39,8 +39,6 @@ public final class ArticleQuery {
 
     public static List<Article> getArticleList(Pattern regexp) {
         try {
-            LOGGER.info(regexp.pattern());
-            LOGGER.info(regexp.toString());
             MorphiaCursor<Article> pipeline = ds.aggregate(Article.class)
                     .match(Filters.eq("isDelete", Boolean.FALSE))
                     .sort(dev.morphia.aggregation.experimental.stages.Sort.sort().ascending("tittle"))

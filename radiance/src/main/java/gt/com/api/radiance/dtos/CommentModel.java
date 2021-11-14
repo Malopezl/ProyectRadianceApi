@@ -6,8 +6,6 @@
 
 package gt.com.api.radiance.dtos;
 
-import gt.com.api.radiance.entities.User;
-
 /**
  *
  * @author malopez
@@ -16,8 +14,9 @@ public class CommentModel {
 
     private String commentId;
     private String comment;
+    private String articleId;
     private String creationDate;
-    private User userId;
+    private String user;
 
     public String getCommentId() {
         return commentId;
@@ -35,6 +34,14 @@ public class CommentModel {
         this.comment = comment;
     }
 
+    public String getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(String articleId) {
+        this.articleId = articleId;
+    }
+
     public String getCreationDate() {
         return creationDate;
     }
@@ -43,18 +50,18 @@ public class CommentModel {
         this.creationDate = creationDate;
     }
 
-    public User getUserId() {
-        return userId;
+    public String getUser() {
+        return user;
     }
 
-    public void setUserId(User userId) {
-        this.userId = userId;
+    public void setUser(String user) {
+        this.user = user;
     }
 
     @Override
     public String toString() {
         return "CommentModel{" + "commentId=" + commentId + ", comment=" + comment + ", creationDate=" + creationDate
-                + ", userId=" + userId + '}';
+                + ", user=" + user + '}';
     }
 
 }

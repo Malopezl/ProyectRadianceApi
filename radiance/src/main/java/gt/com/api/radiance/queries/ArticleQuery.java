@@ -119,4 +119,15 @@ public final class ArticleQuery {
         }
     }
 
+    public static List<Article> getArticleList(ObjectId userId) {
+        try {
+            Query<Article> getArticles = ds.find(Article.class)
+                    .filter(Filters.eq("isDelete", false), Filters.eq("userId", userId));
+            return getArticles.iterator().toList();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            return null;
+        }
+    }
+
 }

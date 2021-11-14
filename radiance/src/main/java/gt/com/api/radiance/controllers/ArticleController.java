@@ -165,4 +165,39 @@ public class ArticleController {
         return ArticleQuery.deleteArticle(articleId);
     }
 
+    public List<ArticleModel> getArticleList(UserLoad userLoad) {
+        UserController userController = new UserController();
+        UserModel user = userController.findUsername(userLoad.getUser());
+        List<Article> articleList = ArticleQuery.getArticleList(new ObjectId(user.getUserId()));
+        if (articleList == null) {
+            return null;
+        }
+        List<ArticleModel> articles = new ArrayList();
+        articleList.stream().map(article -> {
+            ArticleModel articleModel = new ArticleModel();
+            articleModel.setArticleId(article.getId().toString());
+            articleModel.setCreationDate(FormatDate.convertTime(article.getCreationDate()));
+            articleModel.setTittle(article.getTittle());
+            articleModel.setDescription(article.getDescription());
+            articleModel.setContent(article.getContent());
+            articleModel.setLastModifyDate(FormatDate.convertTime(article.getLastModifyDate()));
+            articleModel.setImage(article.getImage());
+            List<TagModel> tags = new ArrayList();
+            article.getTags().stream().map(tag -> {
+                TagModel tagModel = new TagModel();
+                tagModel.setName(tag.getName());
+                tagModel.setColor(tag.getColor());
+                tagModel.setIcon(tag.getIcon());
+                return tagModel;
+            }).forEachOrdered(tagModel -> {
+                tags.add(tagModel);
+            });
+            articleModel.setTags(tags);
+            return articleModel;
+        }).forEachOrdered(articleModel -> {
+            articles.add(articleModel);
+        });
+        return articles;
+    }
+
 }

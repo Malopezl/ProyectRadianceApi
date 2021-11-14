@@ -59,6 +59,7 @@ public class ArticleController {
             List<TagModel> tags = new ArrayList();
             article.getTags().stream().map(tag -> {
                 TagModel tagModel = new TagModel();
+                tagModel.setTagId(tag.getId().toString());
                 tagModel.setName(tag.getName());
                 tagModel.setColor(tag.getColor());
                 tagModel.setIcon(tag.getIcon());

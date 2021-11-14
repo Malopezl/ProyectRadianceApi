@@ -130,9 +130,11 @@ public class ArticleController {
         return articleModel;
     }
 
-    public boolean verifyArticleExists(String id) {
+    public boolean verifyArticleExists(String id, UserLoad userLoad) {
+        UserController userController = new UserController();
         ObjectId articleId = new ObjectId(id);
-        return ArticleQuery.verifyArticleExists(articleId);
+        UserModel user = userController.findUsername(userLoad.getUser());
+        return ArticleQuery.verifyArticleExists(articleId, new ObjectId(user.getUserId()));
     }
 
     public ArticleModel updateArticle(String id, ArticleModel articleModel) {

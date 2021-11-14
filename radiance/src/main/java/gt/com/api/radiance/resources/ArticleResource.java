@@ -130,11 +130,11 @@ public class ArticleResource {
             throw new WebApplicationException("Fields are missing ", Response.Status.NOT_ACCEPTABLE);
         }
         //verificate article exists
-        if (!ARTICLE_CONTROLLER.verifyArticleExists(id)) {
+        if (!ARTICLE_CONTROLLER.verifyArticleExists(id, userLoad)) {
             LOGGER.error("Time of not update article: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.NOT_FOUND.getStatusCode()
                     + " " + userLoad.toString());
-            throw new WebApplicationException("Article not found, articleID: " + id,
+            throw new WebApplicationException("Article not found for user: " + userLoad.getUser(),
                     Response.Status.NOT_FOUND);
         }
         ArticleModel updateArticle = ARTICLE_CONTROLLER.updateArticle(id, articleModel);
@@ -156,11 +156,11 @@ public class ArticleResource {
         ApiVersionValidator.validate(request);
         UserLoad userLoad = Authenticator.tokenValidation(request);
         //verificate article exists
-        if (!ARTICLE_CONTROLLER.verifyArticleExists(id)) {
+        if (!ARTICLE_CONTROLLER.verifyArticleExists(id, userLoad)) {
             LOGGER.error("Time of not delete article: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.NOT_FOUND.getStatusCode()
                     + " " + userLoad.toString());
-            throw new WebApplicationException("article not found, articleID: " + id,
+            throw new WebApplicationException("article not found for user: " + userLoad.getUser(),
                     Response.Status.NOT_FOUND);
         }
         if (!ARTICLE_CONTROLLER.deleteArticle(id)) {

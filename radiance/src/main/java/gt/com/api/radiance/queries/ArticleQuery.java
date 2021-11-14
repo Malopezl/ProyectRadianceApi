@@ -79,9 +79,10 @@ public final class ArticleQuery {
         }
     }
 
-    public static Boolean verifyArticleExists(ObjectId id) {
+    public static Boolean verifyArticleExists(ObjectId id, ObjectId userId) {
         Query<Article> verifyArticle = ds.find(Article.class)
-                .filter(Filters.and(Filters.eq("_id", id), Filters.eq("isDelete", false)));
+                .filter(Filters.and(Filters.eq("_id", id), Filters.eq("userId", userId),
+                        Filters.eq("isDelete", false)));
         return verifyArticle.first() != null;
     }
 

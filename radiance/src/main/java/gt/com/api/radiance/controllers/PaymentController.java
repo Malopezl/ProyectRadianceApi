@@ -6,8 +6,11 @@
 
 package gt.com.api.radiance.controllers;
 
+import gt.com.api.radiance.dtos.PaymentModel;
 import gt.com.api.radiance.entities.Payment;
+import gt.com.api.radiance.helper.FormatDate;
 import gt.com.api.radiance.queries.PaymentQuery;
+import java.util.ArrayList;
 import java.util.List;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
@@ -24,8 +27,23 @@ public class PaymentController {
     public PaymentController() {
     }
 
-    public List<Payment> getPaymentList(String userId) {
-        return PaymentQuery.getPaymentList(new ObjectId(userId));
+    public List<PaymentModel> getPaymentList(String userId) {
+        List<Payment> paymentList = PaymentQuery.getPaymentList(new ObjectId(userId));
+        if (paymentList == null) {
+            return null;
+        }
+        List<PaymentModel> payments = new ArrayList();
+        paymentList.stream().map(payment -> {
+            PaymentModel paymentModel = new PaymentModel();
+            paymentModel.setPaymentId(payment.getId().toString());
+            paymentModel.setAmount(payment.getAmount());
+            paymentModel.setDate(FormatDate.convertTime(payment.getDate()));
+            return paymentModel;
+        }).forEachOrdered(paymentModel -> {
+            paymentModel.setUserId(userId);
+            payments.add(paymentModel);
+        });
+        return payments;
     }
 
     public static Boolean savePayment(Payment payment) {

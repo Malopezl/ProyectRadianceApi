@@ -7,7 +7,7 @@
 package gt.com.api.radiance.resources;
 
 import gt.com.api.radiance.controllers.PaymentController;
-import gt.com.api.radiance.entities.Payment;
+import gt.com.api.radiance.dtos.PaymentModel;
 import gt.com.api.radiance.verify.ApiVersionValidator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,12 +41,12 @@ public class PaymentResource {
     @ApiOperation(value = "Get a payment list", notes = "Get a list of payments by user")
     @GET
     @Path("/{userId}")
-    public List<Payment> getPayments(@PathParam("userId") String user,
+    public List<PaymentModel> getPayments(@PathParam("userId") String user,
             @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
 //        UserLoad userLoad = Authenticator.tokenValidation(request);
-        List<Payment> paymentList = PAYMENT_CONTROLLER.getPaymentList(user);
+        List<PaymentModel> paymentList = PAYMENT_CONTROLLER.getPaymentList(user);
         if (paymentList == null) {
             LOGGER.error("Time of not GET payment list: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.BAD_REQUEST);

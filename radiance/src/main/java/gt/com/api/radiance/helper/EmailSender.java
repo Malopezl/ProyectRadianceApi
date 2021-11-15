@@ -32,7 +32,7 @@ public final class EmailSender {
     private static final int PORT = 587;
     private static final String SUBJECT = "Test Mail";
 
-    private static String BODY = String.join(
+    private static String body = String.join(
             System.getProperty("line.separator"),
             "<h1>Radiance Email</h1>"
     );
@@ -54,19 +54,19 @@ public final class EmailSender {
 
         // Create a message with the specified information.
         if (!password.equals("")) {
-            BODY = BODY.concat(String.join(
+            body = body.concat(String.join(
                     System.getProperty("line.separator"),
                     "<p>Su contraseña es: " + password + "</p>",
                     "<p>Asegurese de guardar su contraseña y eliminar este correo.</p>"
             ));
         } else {
-            BODY = BODY.concat(String.join(
+            body = body.concat(String.join(
                     System.getProperty("line.separator"),
                     "<h3>Este correo es para verificar su cuenta</h3>",
                     "<p>Ingrese al link para realizar el proceso de verificacion de cuenta</p>"
             ));
         }
-        BODY = BODY.concat(String.join(
+        body = body.concat(String.join(
                 System.getProperty("line.separator"),
                 "<p>This email was sent from Radiance®</p>"
         ));
@@ -74,7 +74,7 @@ public final class EmailSender {
         msg.setFrom(new InternetAddress(FROM, FROMNAME));
         msg.setRecipient(Message.RecipientType.TO, new InternetAddress(to));
         msg.setSubject(SUBJECT);
-        msg.setContent(BODY, "text/html");
+        msg.setContent(body, "text/html");
 
         // Send the message.
         try (// Create a transport.

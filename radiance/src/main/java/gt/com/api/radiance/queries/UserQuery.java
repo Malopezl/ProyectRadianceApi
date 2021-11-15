@@ -147,7 +147,8 @@ public final class UserQuery {
 
     public static Boolean changePassword(String newPassword, String username) {
         try {
-            ds.find(User.class).filter(Filters.eq("user", username))
+            ds.find(User.class).filter(Filters.eq("user", username), Filters.eq("isDelete", Boolean.FALSE),
+                    Filters.eq("isActive", Boolean.TRUE))
                     .modify(UpdateOperators.set("password", newPassword))
                     .execute(new ModifyOptions().returnDocument(ReturnDocument.AFTER));
             return true;

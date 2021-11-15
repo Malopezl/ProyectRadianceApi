@@ -116,7 +116,8 @@ public class UserResource {
     @PUT
     @Path("/{id}")
     public UserModel putUser(UserModel userModel, @PathParam("id") String id,
-            @QueryParam("cancelSubscription") Boolean cancel, @Context HttpServletRequest request) {
+            @QueryParam("cancelSubscription") @DefaultValue("false") Boolean cancel,
+            @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
         UserLoad userLoad = Authenticator.tokenValidation(request);

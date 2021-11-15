@@ -79,8 +79,10 @@ public final class ArticleQuery {
 
     public static Boolean verifyArticleExists(ObjectId id, ObjectId userId) {
         Query<Article> verifyArticle = ds.find(Article.class)
-                .filter(Filters.and(Filters.eq("_id", id), Filters.eq("userId", userId),
-                        Filters.eq("isDelete", false)));
+                .filter(Filters.and(Filters.eq("_id", id), Filters.eq("isDelete", false)));
+        if (userId != null) {
+            verifyArticle.filter(Filters.eq("userId", userId));
+        }
         return verifyArticle.first() != null;
     }
 
@@ -119,9 +121,13 @@ public final class ArticleQuery {
 
     public static List<Article> getArticleList(ObjectId userId) {
         try {
-            Query<Article> getArticles = ds.find(Article.class)
-                    .filter(Filters.eq("isDelete", false), Filters.eq("userId", userId));
-            return getArticles.iterator().toList();
+            MorphiaCursor<Article> pipeline = ds.aggregate(Article.class)
+                    .match(Filters.eq("isDelete", false), Filters.eq("userId", userId))
+                    .sort(dev.morphia.aggregation.experimental.stages.Sort.sort().ascending("tittle"))
+                    .lookup(Lookup.lookup("Tag").localField("tagsId")
+                            .foreignField("_id").as("tags"))
+                    .execute(Article.class);
+            return pipeline.toList();
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
             return null;

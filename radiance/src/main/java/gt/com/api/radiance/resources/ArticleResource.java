@@ -48,14 +48,13 @@ public class ArticleResource {
     @ApiOperation(value = "Get a article list", notes = "Get a list of articles")
     @GET
     public List<ArticleModel> getArticles(@QueryParam("filter") @DefaultValue("") String filter,
-            @QueryParam("filterTag") @DefaultValue("") String filterTag,
             @QueryParam("own") @DefaultValue("false") Boolean own, @Context HttpServletRequest request) {
         long startTime = System.currentTimeMillis();
         ApiVersionValidator.validate(request);
         UserLoad userLoad = Authenticator.tokenValidation(request);
         List<ArticleModel> articles;
         if (!own) {
-            articles = ARTICLE_CONTROLLER.getArticles(filter, filterTag);
+            articles = ARTICLE_CONTROLLER.getArticles(filter);
         } else {
             articles = ARTICLE_CONTROLLER.getArticleList(userLoad);
         }
@@ -162,7 +161,7 @@ public class ArticleResource {
         ApiVersionValidator.validate(request);
         UserLoad userLoad = Authenticator.tokenValidation(request);
         //verificate article exists
-        if (!ARTICLE_CONTROLLER.verifyArticleExists(id, userLoad)) {
+        if (!ARTICLE_CONTROLLER.verifyArticleExists(id, null)) {
             LOGGER.error("Time of not delete article: " + (System.currentTimeMillis() - startTime)
                     + " milliseconds, statusCode:" + Response.Status.NOT_FOUND.getStatusCode()
                     + " " + userLoad.toString());

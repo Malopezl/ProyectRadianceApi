@@ -32,7 +32,7 @@ public class ArticleController {
     public ArticleController() {
     }
 
-    public List<ArticleModel> getArticles(String filter, String filterTag) {
+    public List<ArticleModel> getArticles(String filter) {
         Pattern regexp = Pattern.compile(filter, Pattern.CASE_INSENSITIVE);
         List<Article> articleList = ArticleQuery.getArticleList(regexp);
         if (articleList == null) {
@@ -134,8 +134,11 @@ public class ArticleController {
     public boolean verifyArticleExists(String id, UserLoad userLoad) {
         UserController userController = new UserController();
         ObjectId articleId = new ObjectId(id);
-        UserModel user = userController.findUsername(userLoad.getUser());
-        return ArticleQuery.verifyArticleExists(articleId, new ObjectId(user.getUserId()));
+        if (userLoad != null) {
+            UserModel user = userController.findUsername(userLoad.getUser());
+            return ArticleQuery.verifyArticleExists(articleId, new ObjectId(user.getUserId()));
+        }
+        return ArticleQuery.verifyArticleExists(articleId, null);
     }
 
     public ArticleModel updateArticle(String id, ArticleModel articleModel) {

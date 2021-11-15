@@ -2,19 +2,9 @@ server:
   applicationConnectors:
     - type: http
       port: 8080
-    - type: https
-      port: 8002
-      keyStorePath: example.keystore
-      keyStorePassword: example
-      validateCerts: false
   adminConnectors:
     - type: http
       port: 8081
-    - type: https
-      port: 8003
-      keyStorePath: example.keystore
-      keyStorePassword: example
-      validateCerts: false
 
 logging:
   level: INFO

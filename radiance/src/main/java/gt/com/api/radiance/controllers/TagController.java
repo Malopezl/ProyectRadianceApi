@@ -44,22 +44,6 @@ public class TagController {
         }).forEachOrdered(tagModel -> {
             tagsModel.add(tagModel);
         });
-//        tags.setTags(tagsModel);
-//        tags.setIsFirstPage(page == 1);
-//        Long elements = TagQuery.totalPages();
-//        Long pages;
-//        if (elements > size) {
-//            pages = elements / size;
-//        } else {
-//            pages = 1L;
-//        }
-//        tags.setIsLastPage(page.longValue() == pages.longValue());
-//        tags.setNumber(page);
-//        tags.setNumberOfElements(Long.valueOf(tagList.size()));
-//        tags.setIsPreviousPageAvailable(page > 1);
-//        tags.setSize(size);
-//        tags.setTotalElements(elements);
-//        tags.setTotalPages(pages);
         return tagsModel;
     }
 

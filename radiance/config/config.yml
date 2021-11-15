@@ -4,18 +4,24 @@ server:
       port: 8080
   adminConnectors:
     - type: http
-      port: 8081 
+      port: 8081
 
 logging:
   level: INFO
   loggers:
-    gt.com.api: DEBUG
+    gt.com.api.radiance: DEBUG
+  appenders:
+    - type: console
 
 applicationName: radiance
 
 swagger:
-    resourcePackage: gt.com.api.radiance
+    resourcePackage: gt.com.api.radiance.resources
 
-mongodb:
+mongo:
   type: uriConfig
-  uri: mongodb://localhost:27017
+  uri: mongodb://localhost:27017/radiance
+
+secretKey: superSecret
+
+apiVersion: 1

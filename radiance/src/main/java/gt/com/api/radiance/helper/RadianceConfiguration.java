@@ -19,6 +19,14 @@ public class RadianceConfiguration extends Configuration {
     @NotNull
     private MongoConfiguration mongo;
 
+    @Valid
+    @NotNull
+    private String secretKey;
+
+    @Valid
+    @NotNull
+    private Integer apiVersion;
+
     public SwaggerBundleConfiguration getSwagger() {
         return swagger;
     }
@@ -41,6 +49,22 @@ public class RadianceConfiguration extends Configuration {
 
     public void setMongo(MongoConfiguration mongo) {
         this.mongo = mongo;
+    }
+
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
+    }
+
+    public Integer getApiVersion() {
+        return apiVersion;
+    }
+
+    public void setApiVersion(Integer apiVersion) {
+        this.apiVersion = apiVersion;
     }
 
 }

@@ -184,11 +184,13 @@ public class ArticleController {
             articleModel.setTittle(article.getTittle());
             articleModel.setDescription(article.getDescription());
             articleModel.setContent(article.getContent());
+            articleModel.setUser(user);
             articleModel.setLastModifyDate(FormatDate.convertTime(article.getLastModifyDate()));
             articleModel.setImage(article.getImage());
             List<TagModel> tags = new ArrayList();
             article.getTags().stream().map(tag -> {
                 TagModel tagModel = new TagModel();
+                tagModel.setTagId(tag.getId().toString());
                 tagModel.setName(tag.getName());
                 tagModel.setColor(tag.getColor());
                 tagModel.setIcon(tag.getIcon());

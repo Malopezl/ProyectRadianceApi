@@ -6,6 +6,7 @@
 
 package gt.com.api.radiance.controllers;
 
+import gt.com.api.radiance.dtos.ChangePassword;
 import gt.com.api.radiance.dtos.LoginModel;
 import gt.com.api.radiance.dtos.UserForLogin;
 import gt.com.api.radiance.dtos.UserLoad;
@@ -77,4 +78,18 @@ public class LoginController {
         loginModel.setAccessToken(token);
         return loginModel;
     }
+
+    public boolean comparePassword(ChangePassword changePassword, UserLoad userLoad) {
+        User user = UserQuery.findUser(userLoad.getUser());
+        return user.getPassword().equals(changePassword.getPassword());
+    }
+
+    public boolean changePassword(ChangePassword changePassword, UserLoad userLoad) {
+        return UserQuery.changePassword(changePassword.getNewPassword(), userLoad.getUser());
+    }
+
+    public User verifyMailExists(String mail) {
+        return UserQuery.verifyUserMail(mail);
+    }
+
 }

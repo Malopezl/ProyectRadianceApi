@@ -38,9 +38,9 @@ public final class UserQuery {
     }
 
     public static User findUser(String username) {
-        Query<User> getUser = ds.find(User.class).filter(Filters.eq("user", username),
-                Filters.eq("isDelete", Boolean.FALSE), Filters.eq("isActive", Boolean.TRUE));
         try {
+            Query<User> getUser = ds.find(User.class).filter(Filters.eq("user", username),
+                    Filters.eq("isDelete", Boolean.FALSE), Filters.eq("isActive", Boolean.TRUE));
             return getUser.first();
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
@@ -144,4 +144,29 @@ public final class UserQuery {
             return false;
         }
     }
+
+    public static Boolean changePassword(String newPassword, String username) {
+        try {
+            ds.find(User.class).filter(Filters.eq("user", username))
+                    .modify(UpdateOperators.set("password", newPassword))
+                    .execute(new ModifyOptions().returnDocument(ReturnDocument.AFTER));
+            return true;
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            return false;
+        }
+    }
+
+    public static User verifyUserMail(String mail) {
+        try {
+            Query<User> verifyMail = ds.find(User.class)
+                    .filter(Filters.eq("mail", mail), Filters.eq("isDelete", false),
+                            Filters.eq("isActive", Boolean.TRUE), Filters.eq("isVerified", Boolean.TRUE));
+            return verifyMail.first();
+        } catch (Exception e) {
+            LOGGER.error(e.getMessage());
+            return null;
+        }
+    }
+
 }
